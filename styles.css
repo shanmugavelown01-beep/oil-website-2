@@ -1,0 +1,973 @@
+/* ============================================
+   LEVI PREMIUM OILS - MODERN WEBSITE STYLES
+   ============================================ */
+
+:root {
+    --primary-white: #ffffff;
+    --primary-green: #2d5016;
+    --light-green: #4a7c2c;
+    --golden: #d4a574;
+    --light-gold: #e8c9a0;
+    --off-white: #f8f7f3;
+    --text-dark: #2c3e50;
+    --text-light: #666666;
+    --border-radius: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    background-color: var(--primary-white);
+    line-height: 1.6;
+}
+
+/* ============================================
+   NAVIGATION BAR
+   ============================================ */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+    padding: 1rem 0;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    letter-spacing: -0.5px;
+}
+
+.logo-icon {
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    position: relative;
+    transition: var(--transition);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-green), var(--golden));
+    transition: var(--transition);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--primary-green);
+    border-radius: 3px;
+    transition: var(--transition);
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.hero {
+    margin-top: 70px;
+    padding: 80px 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: calc(100vh - 70px);
+}
+
+.hero-content {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    color: var(--primary-green);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 10px 30px rgba(45, 80, 22, 0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(45, 80, 22, 0.3);
+}
+
+.hero-visual {
+    position: relative;
+    height: 500px;
+    animation: slideInRight 0.8s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.oil-drop-large {
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    background: linear-gradient(135deg, var(--light-gold), var(--golden));
+    border-radius: 50% 50% 50% 0%;
+    transform: rotate(-45deg);
+    animation: dropFloat 4s ease-in-out infinite;
+    box-shadow: 0 20px 60px rgba(212, 165, 116, 0.3);
+}
+
+@keyframes dropFloat {
+    0%, 100% {
+        transform: rotate(-45deg) translateY(0);
+    }
+    50% {
+        transform: rotate(-45deg) translateY(-30px);
+    }
+}
+
+.oil-bottle-mockup {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 200px;
+    height: 350px;
+    background: linear-gradient(to right, var(--light-green), var(--primary-green));
+    border-radius: 30px 30px 15px 15px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.oil-bottle-mockup::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--golden), var(--light-gold));
+    border-radius: 50% 50% 20% 20%;
+}
+
+.oil-bottle-mockup::after {
+    content: 'Levi';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
+
+/* ============================================
+   ABOUT SECTION
+   ============================================ */
+
+.about {
+    padding: 80px 2rem;
+    background: linear-gradient(135deg, rgba(45, 80, 22, 0.05), rgba(212, 165, 116, 0.05));
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-container h2 {
+    font-size: 2.8rem;
+    color: var(--primary-green);
+    margin-bottom: 1.5rem;
+}
+
+.about-container p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+.about-features {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.about-features li {
+    font-size: 1rem;
+    color: var(--primary-green);
+    font-weight: 600;
+    animation: slideInLeft 0.6s ease-out both;
+}
+
+.about-features li:nth-child(1) { animation-delay: 0.1s; }
+.about-features li:nth-child(2) { animation-delay: 0.2s; }
+.about-features li:nth-child(3) { animation-delay: 0.3s; }
+.about-features li:nth-child(4) { animation-delay: 0.4s; }
+
+.about-visual {
+    position: relative;
+    height: 400px;
+}
+
+.organic-shape {
+    position: absolute;
+    background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+    opacity: 0.15;
+    animation: shapeShift 6s ease-in-out infinite;
+}
+
+.shape-1 {
+    width: 250px;
+    height: 250px;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    top: 0;
+    left: 0;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    width: 200px;
+    height: 200px;
+    border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+    bottom: 0;
+    right: 0;
+    animation-delay: 2s;
+}
+
+@keyframes shapeShift {
+    0%, 100% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        transform: rotate(0deg);
+    }
+    50% {
+        border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+        transform: rotate(180deg);
+    }
+}
+
+/* ============================================
+   OILS SECTION
+   ============================================ */
+
+.oils-section {
+    padding: 80px 2rem;
+    background-color: var(--off-white);
+}
+
+.oils-section h2 {
+    font-size: 2.8rem;
+    color: var(--primary-green);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.oils-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.oil-card {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.oil-card:nth-child(1) { animation-delay: 0.1s; }
+.oil-card:nth-child(2) { animation-delay: 0.2s; }
+.oil-card:nth-child(3) { animation-delay: 0.3s; }
+.oil-card:nth-child(4) { animation-delay: 0.4s; }
+.oil-card:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.oil-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.oil-card-image {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(135deg, var(--light-gold), var(--golden));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottle-placeholder {
+    background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+    width: 120px;
+    height: 160px;
+    border-radius: 15px 15px 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.oil-drop-accent {
+    position: absolute;
+    width: 50px;
+    height: 70px;
+    background: var(--golden);
+    border-radius: 50% 50% 50% 0%;
+    opacity: 0.6;
+    animation: dropFloat 3s ease-in-out infinite;
+}
+
+.drop-1 { top: 20px; right: 20px; animation-delay: 0s; }
+.drop-2 { top: 20px; right: 20px; animation-delay: 0.5s; }
+.drop-3 { top: 20px; right: 20px; animation-delay: 1s; }
+.drop-4 { top: 20px; right: 20px; animation-delay: 1.5s; }
+.drop-5 { top: 20px; right: 20px; animation-delay: 2s; }
+
+.oil-card-content {
+    padding: 1.5rem;
+}
+
+.oil-card-content h3 {
+    color: var(--primary-green);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.oil-description {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.benefits-list {
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.benefits-list p {
+    margin-bottom: 0.3rem;
+}
+
+.price-section {
+    margin: 1rem 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.price {
+    font-size: 1.8rem;
+    color: var(--golden);
+    font-weight: 700;
+}
+
+.unit {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.add-to-cart {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: white;
+    border: none;
+    padding: 10px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+    margin-top: 1rem;
+}
+
+.add-to-cart:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(45, 80, 22, 0.3);
+}
+
+/* ============================================
+   HEALTH BENEFITS SECTION
+   ============================================ */
+
+.health-benefits {
+    padding: 80px 2rem;
+    background: white;
+}
+
+.health-benefits h2 {
+    font-size: 2.8rem;
+    color: var(--primary-green);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.benefits-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.benefit-card {
+    background: linear-gradient(135deg, rgba(45, 80, 22, 0.05), rgba(212, 165, 116, 0.05));
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.benefit-card:nth-child(1) { animation-delay: 0.1s; }
+.benefit-card:nth-child(2) { animation-delay: 0.2s; }
+.benefit-card:nth-child(3) { animation-delay: 0.3s; }
+.benefit-card:nth-child(4) { animation-delay: 0.4s; }
+.benefit-card:nth-child(5) { animation-delay: 0.5s; }
+.benefit-card:nth-child(6) { animation-delay: 0.6s; }
+
+.benefit-card:hover {
+    border-color: var(--golden);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(212, 165, 116, 0.2);
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+    color: var(--primary-green);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.benefit-card p {
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+/* ============================================
+   PACKAGING SECTION
+   ============================================ */
+
+.packaging {
+    padding: 80px 2rem;
+    background: linear-gradient(135deg, rgba(45, 80, 22, 0.05), rgba(212, 165, 116, 0.05));
+}
+
+.packaging h2 {
+    font-size: 2.8rem;
+    color: var(--primary-green);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.packaging-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.packaging-info h3 {
+    font-size: 1.8rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+}
+
+.packaging-info p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+.packaging-features {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.packaging-features li {
+    color: var(--primary-green);
+    font-weight: 600;
+    animation: slideInLeft 0.6s ease-out both;
+}
+
+.packaging-features li:nth-child(1) { animation-delay: 0.1s; }
+.packaging-features li:nth-child(2) { animation-delay: 0.2s; }
+.packaging-features li:nth-child(3) { animation-delay: 0.3s; }
+.packaging-features li:nth-child(4) { animation-delay: 0.4s; }
+.packaging-features li:nth-child(5) { animation-delay: 0.5s; }
+.packaging-features li:nth-child(6) { animation-delay: 0.6s; }
+
+.packaging-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+.bottle-display {
+    display: flex;
+    gap: -20px;
+    justify-content: center;
+    align-items: flex-end;
+    perspective: 1000px;
+}
+
+.bottle {
+    width: 100px;
+    height: 200px;
+    border-radius: 15px 15px 10px 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    position: relative;
+    transition: var(--transition);
+}
+
+.bottle::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 20px;
+    background: linear-gradient(to bottom, var(--golden), var(--light-gold));
+    border-radius: 50% 50% 10% 10%;
+}
+
+.bottle-1 {
+    background: linear-gradient(to right, #4a7c2c, #2d5016);
+    animation: bottleSwing 3s ease-in-out infinite;
+}
+
+.bottle-2 {
+    background: linear-gradient(to right, #f5f5f0, #e8d4c0);
+    animation: bottleSwing 3s ease-in-out infinite;
+    animation-delay: 0.3s;
+}
+
+.bottle-3 {
+    background: linear-gradient(to right, #d4a574, #c0935f);
+    animation: bottleSwing 3s ease-in-out infinite;
+    animation-delay: 0.6s;
+}
+
+@keyframes bottleSwing {
+    0%, 100% {
+        transform: rotateZ(-5deg) translateY(0);
+    }
+    50% {
+        transform: rotateZ(5deg) translateY(-10px);
+    }
+}
+
+/* ============================================
+   GALLERY SECTION
+   ============================================ */
+
+.gallery {
+    padding: 80px 2rem;
+    background-color: var(--off-white);
+}
+
+.gallery h2 {
+    font-size: 2.8rem;
+    color: var(--primary-green);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.gallery-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.gallery-item {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+    aspect-ratio: 1;
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-item:nth-child(2) { animation-delay: 0.2s; }
+.gallery-item:nth-child(3) { animation-delay: 0.3s; }
+.gallery-item:nth-child(4) { animation-delay: 0.4s; }
+.gallery-item:nth-child(5) { animation-delay: 0.5s; }
+.gallery-item:nth-child(6) { animation-delay: 0.6s; }
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.gallery-placeholder {
+    background: linear-gradient(135deg, var(--light-gold), var(--golden));
+    color: var(--primary-green);
+}
+
+.gallery-item:hover .gallery-placeholder {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: white;
+}
+
+/* ============================================
+   CONTACT SECTION
+   ============================================ */
+
+.contact {
+    padding: 80px 2rem;
+    background: white;
+}
+
+.contact h2 {
+    font-size: 2.8rem;
+    color: var(--primary-green);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+}
+
+.contact-info {
+    display: grid;
+    gap: 2rem;
+}
+
+.contact-item h4 {
+    color: var(--primary-green);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.contact-item p {
+    color: var(--text-light);
+}
+
+.contact-item a {
+    color: var(--golden);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.contact-item a:hover {
+    color: var(--primary-green);
+    text-decoration: underline;
+}
+
+.social-link {
+    margin-right: 0.5rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 12px 15px;
+    border: 2px solid rgba(45, 80, 22, 0.1);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+}
+
+.submit-button {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: white;
+    border: none;
+    padding: 15px 0;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(45, 80, 22, 0.3);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+    background: var(--primary-green);
+    color: white;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.footer-content p {
+    margin: 0.5rem 0;
+    opacity: 0.9;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 40px 1rem;
+        min-height: auto;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .about-container,
+    .packaging-container,
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+
+    .oils-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    h2 {
+        font-size: 2rem !important;
+    }
+
+    .about-features,
+    .packaging-features {
+        grid-template-columns: 1fr;
+    }
+
+    .about,
+    .health-benefits,
+    .packaging,
+    .gallery,
+    .contact {
+        padding: 40px 1rem;
+    }
+
+    .benefits-container {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.3rem;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        padding: 12px 30px;
+    }
+
+    h2 {
+        font-size: 1.6rem !important;
+    }
+
+    .oil-card {
+        margin-bottom: 1rem;
+    }
+
+    .contact-container {
+        gap: 2rem;
+    }
+}
