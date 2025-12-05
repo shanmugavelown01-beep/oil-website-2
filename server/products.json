@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Levi Oils Groundnut Oil", "price": 12.99, "volume": "500ml", "description": "Rich in antioxidants and vitamin E.", "image": "" },
+  { "id": 2, "name": "Levi Oils Coconut Oil", "price": 14.99, "volume": "500ml", "description": "Organic virgin coconut oil.", "image": "" },
+  { "id": 3, "name": "Levi Oils Sesame Oil", "price": 13.99, "volume": "250ml", "description": "Nutty and aromatic sesame oil.", "image": "" }
+]

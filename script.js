@@ -4,15 +4,29 @@
 
 // Shopping Cart State
 let cart = [];
-const products = [
-    { id: 1, name: 'Levi Oils Groundnut Oil', price: 12.99, volume: '500ml' },
-    { id: 2, name: 'Levi Oils Coconut Oil', price: 14.99, volume: '500ml' },
-    { id: 3, name: 'Levi Oils Sesame Oil', price: 13.99, volume: '250ml' },
-    { id: 4, name: 'Levi Oils Sunflower Oil', price: 10.99, volume: '500ml' },
-    { id: 5, name: 'Levi Oils Castor Oil', price: 11.99, volume: '250ml' }
-];
+let products = []; // will try to load from API on server; fallback to embedded list
 
-document.addEventListener('DOMContentLoaded', function() {
+async function loadProductsFromAPI() {
+    try {
+        const res = await fetch('/api/products');
+        if (!res.ok) throw new Error('No API');
+        products = await res.json();
+        console.log('Loaded products from API:', products);
+    } catch (err) {
+        // Fallback to local products if API not available
+        products = [
+            { id: 1, name: 'Levi Oils Groundnut Oil', price: 12.99, volume: '500ml' },
+            { id: 2, name: 'Levi Oils Coconut Oil', price: 14.99, volume: '500ml' },
+            { id: 3, name: 'Levi Oils Sesame Oil', price: 13.99, volume: '250ml' },
+            { id: 4, name: 'Levi Oils Sunflower Oil', price: 10.99, volume: '500ml' },
+            { id: 5, name: 'Levi Oils Castor Oil', price: 11.99, volume: '250ml' }
+        ];
+        console.log('Using fallback products list');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadProductsFromAPI();
     initializeNavigation();
     initializeScrollEffects();
     initializeFormHandling();

@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin - Levi Oils</title>
+  <style>body{font-family:Arial,Helvetica,sans-serif;padding:20px}form{max-width:600px}input,textarea{width:100%;padding:8px;margin:6px 0}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px}</style>
+</head>
+<body>
+  <h1>Admin - Manage Products</h1>
+  <form id="productForm">
+    <input id="name" placeholder="Product name" required>
+    <input id="price" placeholder="Price" type="number" step="0.01" required>
+    <input id="volume" placeholder="Volume (e.g. 500ml)">
+    <textarea id="description" placeholder="Description"></textarea>
+    <button type="submit">Save Product</button>
+  </form>
+
+  <h2>Existing Products</h2>
+  <table id="productsTable">
+    <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Actions</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const api = '/api/products';
+    async function fetchProducts(){
+      const res = await fetch(api);
+      const products = await res.json();
+      const tbody = document.querySelector('#productsTable tbody');
+      tbody.innerHTML = '';
+      products.forEach(p=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>$${p.price.toFixed(2)}</td><td><button data-id="${p.id}" class="edit">Edit</button> <button data-id="${p.id}" class="del">Delete</button></td>`;
+        tbody.appendChild(tr);
+      });
+      attachButtons();
+    }
+    function attachButtons(){
+      document.querySelectorAll('.del').forEach(b=>b.onclick=async e=>{
+        const id=e.target.dataset.id; if(!confirm('Delete product '+id+'?')) return;
+        await fetch(api+'/'+id,{method:'DELETE'}); fetchProducts();
+      });
+      document.querySelectorAll('.edit').forEach(b=>b.onclick=async e=>{
+        const id=e.target.dataset.id; const res=await fetch(api); const items=await res.json(); const p=items.find(i=>i.id==id);
+        document.getElementById('name').value=p.name; document.getElementById('price').value=p.price; document.getElementById('volume').value=p.volume||''; document.getElementById('description').value=p.description||'';
+        document.getElementById('productForm').dataset.editId=id;
+      });
+    }
+    document.getElementById('productForm').onsubmit=async e=>{
+      e.preventDefault();
+      const id = e.target.dataset.editId;
+      const body={name:document.getElementById('name').value,price:parseFloat(document.getElementById('price').value),volume:document.getElementById('volume').value,description:document.getElementById('description').value};
+      if(id){
+        await fetch(api+'/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+        delete e.target.dataset.editId;
+      } else {
+        await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      }
+      e.target.reset(); fetchProducts();
+    };
+    fetchProducts();
+  </script>
+</body>
+</html>
