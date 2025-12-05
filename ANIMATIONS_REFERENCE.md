@@ -1,5 +1,5 @@
 /* ============================================
-   LEVI PREMIUM OILS - ANIMATIONS REFERENCE
+# LEVI OILS - ANIMATIONS REFERENCE
    ============================================ */
 
 /*
@@ -278,7 +278,7 @@ FAST: 0.2s - 0.3s (UI feedback, hover states)
 NORMAL: 0.6s - 0.8s (Page entrance, section reveals)
 SLOW: 2s - 4s (Background elements, continuous loops)
 
-COMMON TIMINGS USED IN LEVI WEBSITE:
+COMMON TIMINGS USED IN LEVI OILS WEBSITE:
 - 0.3s: Transitions and hover effects
 - 0.6s: Card reveals (fadeInUp)
 - 0.8s: Hero section entrances
@@ -292,7 +292,7 @@ COMMON TIMINGS USED IN LEVI WEBSITE:
    ============================================ */
 
 /*
-EASING USED IN LEVI:
+EASING USED IN LEVI OILS:
 cubic-bezier(0.4, 0, 0.2, 1) - smooth, natural easing
 cubic-bezier(0.25, 0.46, 0.45, 0.94) - ease-out
 cubic-bezier(0.55, 0.055, 0.675, 0.19) - ease-in
@@ -302,7 +302,7 @@ that feel natural to the user.
 */
 
 /* ============================================
-   ANIMATION DELAYS IN LEVI
+   ANIMATION DELAYS IN LEVI OILS
    ============================================ */
 
 /*

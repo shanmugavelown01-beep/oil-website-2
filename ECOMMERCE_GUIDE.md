@@ -1,8 +1,8 @@
 <!-- ============================================
-     LEVI PREMIUM OILS - E-COMMERCE SYSTEM GUIDE
+     LEVI OILS - E-COMMERCE SYSTEM GUIDE
      ============================================ -->
 
-# 🛒 Levi Premium Oils - E-Commerce & Billing System
+# 🛒 Levi Oils - E-Commerce & Billing System
 
 ## ✅ New Features Added
 
@@ -34,11 +34,11 @@ Beautiful order confirmation with order number and receipt information.
 
 ### 2. Product Management
 **5 Pre-configured Products**:
-1. Levi Groundnut Oil - $12.99 (500ml)
-2. Levi Coconut Oil - $14.99 (500ml)
-3. Levi Sesame Oil - $13.99 (250ml)
-4. Levi Sunflower Oil - $10.99 (500ml)
-5. Levi Castor Oil - $11.99 (250ml)
+1. Levi Oils Groundnut Oil - $12.99 (500ml)
+2. Levi Oils Coconut Oil - $14.99 (500ml)
+3. Levi Oils Sesame Oil - $13.99 (250ml)
+4. Levi Oils Sunflower Oil - $10.99 (500ml)
+5. Levi Oils Castor Oil - $11.99 (250ml)
 
 **Product Features**:
 - Quick add-to-cart buttons
@@ -301,7 +301,7 @@ You **MUST** implement:
 ```javascript
 {
     id: 1,
-    name: 'Levi Groundnut Oil',
+    name: 'Levi Oils Groundnut Oil',
     price: 12.99,
     volume: '500ml',
     quantity: 2
@@ -471,7 +471,7 @@ fetch('/api/send-confirmation', {
 
 ## 🎉 You're Ready!
 
-Your Levi Premium Oils website now has a complete e-commerce system!
+Your Levi Oils website now has a complete e-commerce system!
 
 **Test It Now**:
 1. Open `index.html`

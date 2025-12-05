@@ -1,8 +1,8 @@
 <!-- ============================================
-     LEVI PREMIUM OILS - QUICK START GUIDE
+     LEVI OILS - QUICK START GUIDE
      ============================================ -->
 
-# 🌿 Levi Premium Oils - Quick Start Guide
+# 🌿 Levi Oils - Quick Start Guide
 
 ## 🚀 How to Use
 
@@ -348,7 +348,7 @@ Before launching:
 
 ## 🚀 You're Ready!
 
-Your Levi Premium Oils website is complete and ready to use. Start by opening `index.html` in your browser and exploring all the features.
+Your Levi Oils website is complete and ready to use. Start by opening `index.html` in your browser and exploring all the features.
 
 **Happy selling! 🌿**
 

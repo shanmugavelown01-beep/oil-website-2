@@ -218,7 +218,7 @@ To make this production-ready:
 
 ## 📝 License
 
-Created for Levi Premium Oils Brand - 2024
+Created for Levi Oils Brand - 2024
 
 ## 🤝 Support
 

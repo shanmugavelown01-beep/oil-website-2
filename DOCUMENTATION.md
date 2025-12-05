@@ -1,4 +1,4 @@
-# Levi Premium Oils Website - Complete Documentation
+# Levi Oils Website - Complete Documentation
 
 ## 📋 Table of Contents
 
@@ -13,7 +13,7 @@
 
 ## Project Overview
 
-**Levi Premium Oils** is a full-featured e-commerce website showcasing premium cooking oils with a focus on natural, organic branding and modern web design principles.
+**Levi Oils** is a full-featured e-commerce website showcasing premium cooking oils with a focus on natural, organic branding and modern web design principles.
 
 ### Key Objectives Met:
 ✅ Clean, fresh, natural design  
@@ -325,7 +325,7 @@ python -m http.server 8000
 
 **To Add**:
 ```html
-<meta property="og:title" content="Levi Premium Oils">
+<meta property="og:title" content="Levi Oils">
 <meta property="og:description" content="...">
 <meta property="og:image" content="...">
 ```

@@ -1,15 +1,15 @@
 // ============================================
-// LEVI PREMIUM OILS - INTERACTIVE FEATURES
+// LEVI OILS - INTERACTIVE FEATURES
 // ============================================
 
 // Shopping Cart State
 let cart = [];
 const products = [
-    { id: 1, name: 'Levi Groundnut Oil', price: 12.99, volume: '500ml' },
-    { id: 2, name: 'Levi Coconut Oil', price: 14.99, volume: '500ml' },
-    { id: 3, name: 'Levi Sesame Oil', price: 13.99, volume: '250ml' },
-    { id: 4, name: 'Levi Sunflower Oil', price: 10.99, volume: '500ml' },
-    { id: 5, name: 'Levi Castor Oil', price: 11.99, volume: '250ml' }
+    { id: 1, name: 'Levi Oils Groundnut Oil', price: 12.99, volume: '500ml' },
+    { id: 2, name: 'Levi Oils Coconut Oil', price: 14.99, volume: '500ml' },
+    { id: 3, name: 'Levi Oils Sesame Oil', price: 13.99, volume: '250ml' },
+    { id: 4, name: 'Levi Oils Sunflower Oil', price: 10.99, volume: '500ml' },
+    { id: 5, name: 'Levi Oils Castor Oil', price: 11.99, volume: '250ml' }
 ];
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -752,4 +752,4 @@ function throttle(func, limit) {
     };
 }
 
-console.log('Levi Premium Oils Website - All systems initialized! 🌿');
+console.log('Levi Oils Website - All systems initialized! 🌿');
