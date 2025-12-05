@@ -143,6 +143,22 @@ body {
     display: inline-block;
 }
 
+.tracking-icon {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: var(--transition);
+    margin-left: 15px;
+}
+
+.tracking-icon:hover {
+    transform: scale(1.1);
+}
+
+.tracking-symbol {
+    display: inline-block;
+}
+
 .cart-badge {
     position: absolute;
     top: -8px;
@@ -1519,6 +1535,11 @@ body {
 
     .cart-icon {
         font-size: 1.2rem;
+    }
+
+    .tracking-icon {
+        font-size: 1.2rem;
+        margin-left: 8px;
     }
 
     .cart-sidebar {

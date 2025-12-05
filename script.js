@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeAnimations();
     initializeShoppingCart();
     initializeCheckout();
+    initializeTrackingIcon();
     loadCartFromStorage();
 });
 
@@ -784,6 +785,30 @@ function throttle(func, limit) {
             setTimeout(() => inThrottle = false, limit);
         }
     };
+}
+
+// ============================================
+// TRACKING ICON FUNCTIONALITY
+// ============================================
+
+function initializeTrackingIcon() {
+    const trackingIcon = document.getElementById('trackingIcon');
+    
+    if (trackingIcon) {
+        trackingIcon.addEventListener('click', () => {
+            // Redirect to order tracking page
+            window.location.href = '/order-tracking.html';
+        });
+        
+        // Add smooth hover effect
+        trackingIcon.style.cursor = 'pointer';
+        trackingIcon.addEventListener('mouseenter', function() {
+            this.style.color = '#d4a574';
+        });
+        trackingIcon.addEventListener('mouseleave', function() {
+            this.style.color = '';
+        });
+    }
 }
 
 console.log('Levi Oils Website - All systems initialized! 🌿');
