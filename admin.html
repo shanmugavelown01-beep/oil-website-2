@@ -4,61 +4,256 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin - Levi Oils</title>
-  <style>body{font-family:Arial,Helvetica,sans-serif;padding:20px}form{max-width:600px}input,textarea{width:100%;padding:8px;margin:6px 0}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px}</style>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; background: #f5f5f5; color: #333; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    h1, h2 { color: #2d5016; margin-bottom: 15px; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; }
+    .tabs button { padding: 10px 20px; background: #f0f0f0; border: none; cursor: pointer; border-bottom: 3px solid transparent; }
+    .tabs button.active { background: #2d5016; color: white; border-bottom-color: #d4a574; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    form { max-width: 600px; background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    input, textarea { width: 100%; padding: 8px; margin: 6px 0 12px 0; border: 1px solid #ddd; border-radius: 4px; font-family: Arial, sans-serif; }
+    button { padding: 10px 20px; background: #2d5016; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; }
+    button:hover { background: #4a7c2c; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    th { background: #2d5016; color: white; padding: 12px; text-align: left; font-weight: bold; }
+    td { padding: 12px; border-bottom: 1px solid #eee; }
+    tr:hover { background: #f9f9f9; }
+    .action-btn { padding: 6px 12px; font-size: 0.9em; margin: 0 2px; }
+    .action-btn.edit { background: #d4a574; }
+    .action-btn.edit:hover { background: #c9945f; }
+    .action-btn.del { background: #ff6b6b; }
+    .action-btn.del:hover { background: #ff5252; }
+    .action-btn.view { background: #4a7c2c; }
+    .action-btn.view:hover { background: #2d5016; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; justify-content: center; align-items: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; padding: 30px; border-radius: 10px; max-width: 900px; max-height: 90vh; overflow: auto; position: relative; }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #aaa; }
+    .modal-close:hover { color: #000; }
+    .invoice-preview { background: #f9f9f9; padding: 20px; border-radius: 8px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
+    .stat-card h3 { color: #666; margin-bottom: 10px; }
+    .stat-card .number { font-size: 2em; color: #2d5016; font-weight: bold; }
+  </style>
+  <script src="invoice-generator.js"></script>
 </head>
 <body>
-  <h1>Admin - Manage Products</h1>
-  <form id="productForm">
-    <input id="name" placeholder="Product name" required>
-    <input id="price" placeholder="Price" type="number" step="0.01" required>
-    <input id="volume" placeholder="Volume (e.g. 500ml)">
-    <textarea id="description" placeholder="Description"></textarea>
-    <button type="submit">Save Product</button>
-  </form>
+  <div class="container">
+    <h1>🛠️ Admin Dashboard - Levi Oils</h1>
 
-  <h2>Existing Products</h2>
-  <table id="productsTable">
-    <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Actions</th></tr></thead>
-    <tbody></tbody>
-  </table>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('products')">Products</button>
+      <button class="tab-btn" onclick="switchTab('orders')">Orders</button>
+      <button class="tab-btn" onclick="switchTab('invoices')">Invoices & Billing</button>
+    </div>
+
+    <!-- Products Tab -->
+    <div id="products" class="tab-content active">
+      <h2>Manage Products</h2>
+      <form id="productForm">
+        <input id="name" placeholder="Product name" required>
+        <input id="price" placeholder="Price" type="number" step="0.01" required>
+        <input id="volume" placeholder="Volume (e.g. 500ml)">
+        <textarea id="description" placeholder="Description"></textarea>
+        <button type="submit">Save Product</button>
+      </form>
+
+      <h3>Existing Products</h3>
+      <table id="productsTable">
+        <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Volume</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Orders Tab -->
+    <div id="orders" class="tab-content">
+      <h2>Customer Orders</h2>
+      <div class="stats">
+        <div class="stat-card">
+          <h3>Total Orders</h3>
+          <div class="number" id="totalOrders">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Revenue</h3>
+          <div class="number" id="totalRevenue">$0</div>
+        </div>
+      </div>
+      <table id="ordersTable">
+        <thead><tr><th>Order #</th><th>Customer</th><th>Email</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Invoices Tab -->
+    <div id="invoices" class="tab-content">
+      <h2>Invoices & Billing</h2>
+      <div class="stats">
+        <div class="stat-card">
+          <h3>Total Invoices</h3>
+          <div class="number" id="totalInvoices">0</div>
+        </div>
+      </div>
+      <table id="invoicesTable">
+        <thead><tr><th>Invoice ID</th><th>Order #</th><th>Customer</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Invoice Modal -->
+  <div id="invoiceModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('invoiceModal')">&times;</span>
+      <div id="invoiceContent"></div>
+    </div>
+  </div>
 
   <script>
     const api = '/api/products';
-    async function fetchProducts(){
+
+    // Tab switching
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      event.target.classList.add('active');
+      
+      if (tab === 'orders') loadOrders();
+      if (tab === 'invoices') loadInvoices();
+    }
+
+    // Products
+    async function fetchProducts() {
       const res = await fetch(api);
       const products = await res.json();
       const tbody = document.querySelector('#productsTable tbody');
       tbody.innerHTML = '';
-      products.forEach(p=>{
+      products.forEach(p => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>$${p.price.toFixed(2)}</td><td><button data-id="${p.id}" class="edit">Edit</button> <button data-id="${p.id}" class="del">Delete</button></td>`;
+        tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>$${p.price.toFixed(2)}</td><td>${p.volume||''}</td><td>
+          <button class="action-btn edit" data-id="${p.id}" onclick="editProduct(${p.id})">Edit</button>
+          <button class="action-btn del" data-id="${p.id}" onclick="deleteProduct(${p.id})">Delete</button>
+        </td>`;
         tbody.appendChild(tr);
       });
-      attachButtons();
     }
-    function attachButtons(){
-      document.querySelectorAll('.del').forEach(b=>b.onclick=async e=>{
-        const id=e.target.dataset.id; if(!confirm('Delete product '+id+'?')) return;
-        await fetch(api+'/'+id,{method:'DELETE'}); fetchProducts();
-      });
-      document.querySelectorAll('.edit').forEach(b=>b.onclick=async e=>{
-        const id=e.target.dataset.id; const res=await fetch(api); const items=await res.json(); const p=items.find(i=>i.id==id);
-        document.getElementById('name').value=p.name; document.getElementById('price').value=p.price; document.getElementById('volume').value=p.volume||''; document.getElementById('description').value=p.description||'';
-        document.getElementById('productForm').dataset.editId=id;
-      });
-    }
-    document.getElementById('productForm').onsubmit=async e=>{
+
+    document.getElementById('productForm').onsubmit = async e => {
       e.preventDefault();
       const id = e.target.dataset.editId;
-      const body={name:document.getElementById('name').value,price:parseFloat(document.getElementById('price').value),volume:document.getElementById('volume').value,description:document.getElementById('description').value};
-      if(id){
-        await fetch(api+'/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      const body = {
+        name: document.getElementById('name').value,
+        price: parseFloat(document.getElementById('price').value),
+        volume: document.getElementById('volume').value,
+        description: document.getElementById('description').value
+      };
+      if (id) {
+        await fetch(api + '/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         delete e.target.dataset.editId;
       } else {
-        await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+        await fetch(api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       }
-      e.target.reset(); fetchProducts();
+      e.target.reset();
+      fetchProducts();
     };
+
+    async function editProduct(id) {
+      const res = await fetch(api);
+      const products = await res.json();
+      const p = products.find(i => i.id == id);
+      document.getElementById('name').value = p.name;
+      document.getElementById('price').value = p.price;
+      document.getElementById('volume').value = p.volume || '';
+      document.getElementById('description').value = p.description || '';
+      document.getElementById('productForm').dataset.editId = id;
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm('Delete product ' + id + '?')) return;
+      await fetch(api + '/' + id, { method: 'DELETE' });
+      fetchProducts();
+    }
+
+    // Orders
+    async function loadOrders() {
+      try {
+        const res = await fetch('/api/orders');
+        const orders = await res.json();
+        const tbody = document.querySelector('#ordersTable tbody');
+        tbody.innerHTML = '';
+        let totalRevenue = 0;
+        orders.forEach(o => {
+          const total = (o.subtotal || 0) + (o.tax || 0) + (o.shipping || 0);
+          totalRevenue += total;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${o.orderNumber}</td><td>${o.customer.fullName}</td><td>${o.customer.email}</td><td>$${total.toFixed(2)}</td><td>${o.date}</td><td>
+            <button class="action-btn view" onclick="viewOrderInvoice('${JSON.stringify(o).replace(/'/g, "\\'")}')" >View Invoice</button>
+          </td>`;
+          tbody.appendChild(tr);
+        });
+        document.getElementById('totalOrders').textContent = orders.length;
+        document.getElementById('totalRevenue').textContent = '$' + totalRevenue.toFixed(2);
+      } catch (err) {
+        console.error('Error loading orders:', err);
+      }
+    }
+
+    // Invoices
+    async function loadInvoices() {
+      try {
+        const res = await fetch('/api/invoices');
+        const invoices = await res.json();
+        const tbody = document.querySelector('#invoicesTable tbody');
+        tbody.innerHTML = '';
+        invoices.forEach(inv => {
+          const total = (inv.order?.subtotal || 0) + (inv.order?.tax || 0) + (inv.order?.shipping || 0);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${inv.id}</td><td>${inv.order?.orderNumber || 'N/A'}</td><td>${inv.order?.customer?.fullName || 'N/A'}</td><td>$${total.toFixed(2)}</td><td>${inv.createdAt?.split('T')[0] || ''}</td><td>
+            <button class="action-btn view" onclick="viewInvoiceHTML('${inv.id}')">View</button>
+            <button class="action-btn edit" onclick="printInvoiceAdmin('${JSON.stringify(inv.order).replace(/'/g, "\\'")}')" >Print</button>
+          </td>`;
+          tbody.appendChild(tr);
+        });
+        document.getElementById('totalInvoices').textContent = invoices.length;
+      } catch (err) {
+        console.error('Error loading invoices:', err);
+      }
+    }
+
+    function viewOrderInvoice(orderStr) {
+      const order = JSON.parse(orderStr);
+      const invoice = new InvoiceGenerator(order);
+      document.getElementById('invoiceContent').innerHTML = invoice.generateHTML();
+      document.getElementById('invoiceModal').classList.add('active');
+    }
+
+    async function viewInvoiceHTML(invId) {
+      try {
+        const res = await fetch('/api/invoices/' + invId);
+        const inv = await res.json();
+        document.getElementById('invoiceContent').innerHTML = inv.html || '<p>No HTML available</p>';
+        document.getElementById('invoiceModal').classList.add('active');
+      } catch (err) {
+        alert('Could not load invoice');
+      }
+    }
+
+    function printInvoiceAdmin(orderStr) {
+      const order = JSON.parse(orderStr);
+      const invoice = new InvoiceGenerator(order);
+      invoice.displayInModal();
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Init
     fetchProducts();
   </script>
 </body>

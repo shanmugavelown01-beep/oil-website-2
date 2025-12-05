@@ -332,6 +332,26 @@ function processOrder() {
         paymentMethod: paymentMethod
     };
 
+    // Save order for order-success page and invoice generation
+    localStorage.setItem('lastOrder', JSON.stringify(order));
+
+    // Send order to server
+    fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+    }).catch(err => console.warn('Could not send order to server:', err));
+
+    // Generate and store invoice
+    if (typeof InvoiceGenerator !== 'undefined') {
+        const invoice = new InvoiceGenerator(order);
+        fetch('/api/invoices', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order, html: invoice.generateHTML() })
+        }).catch(err => console.warn('Could not save invoice:', err));
+    }
+
     // Log order (in production, send to server)
     console.log('Order placed:', order);
 

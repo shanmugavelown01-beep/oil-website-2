@@ -10,6 +10,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const PRODUCTS_FILE = path.join(__dirname, 'products.json');
+const INVOICES_FILE = path.join(__dirname, 'invoices.json');
+const ORDERS_FILE = path.join(__dirname, 'orders.json');
+
+// Ensure invoice and orders files exist
+if (!fs.existsSync(INVOICES_FILE)) fs.writeFileSync(INVOICES_FILE, JSON.stringify([]));
+if (!fs.existsSync(ORDERS_FILE)) fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
 
 function readProducts() {
   const raw = fs.readFileSync(PRODUCTS_FILE, 'utf8');
@@ -18,6 +24,24 @@ function readProducts() {
 
 function writeProducts(list) {
   fs.writeFileSync(PRODUCTS_FILE, JSON.stringify(list, null, 2));
+}
+
+function readInvoices() {
+  const raw = fs.readFileSync(INVOICES_FILE, 'utf8');
+  return JSON.parse(raw);
+}
+
+function writeInvoices(list) {
+  fs.writeFileSync(INVOICES_FILE, JSON.stringify(list, null, 2));
+}
+
+function readOrders() {
+  const raw = fs.readFileSync(ORDERS_FILE, 'utf8');
+  return JSON.parse(raw);
+}
+
+function writeOrders(list) {
+  fs.writeFileSync(ORDERS_FILE, JSON.stringify(list, null, 2));
 }
 
 // Serve frontend static files from project root
@@ -118,7 +142,61 @@ app.post('/api/orders', (req, res) => {
   order.date = new Date().toISOString();
   // In production: persist to DB, send email, process payment verification
   console.log('Order received:', order);
+  
+  // Store order
+  try {
+    const orders = readOrders();
+    orders.push(order);
+    writeOrders(orders);
+  } catch (err) {
+    console.warn('Could not persist order:', err);
+  }
+  
   res.status(201).json(order);
+});
+
+// Invoices API
+app.post('/api/invoices', (req, res) => {
+  try {
+    const invoice = req.body;
+    invoice.id = 'INV-' + Date.now();
+    invoice.createdAt = new Date().toISOString();
+    const invoices = readInvoices();
+    invoices.push(invoice);
+    writeInvoices(invoices);
+    res.status(201).json(invoice);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not save invoice' });
+  }
+});
+
+app.get('/api/invoices', (req, res) => {
+  try {
+    const invoices = readInvoices();
+    res.json(invoices);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not read invoices' });
+  }
+});
+
+app.get('/api/invoices/:id', (req, res) => {
+  try {
+    const invoices = readInvoices();
+    const invoice = invoices.find(i => i.id === req.params.id);
+    if (!invoice) return res.status(404).json({ error: 'Invoice not found' });
+    res.json(invoice);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not read invoice' });
+  }
+});
+
+app.get('/api/orders', (req, res) => {
+  try {
+    const orders = readOrders();
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not read orders' });
+  }
 });
 
 const port = process.env.PORT || 3000;
