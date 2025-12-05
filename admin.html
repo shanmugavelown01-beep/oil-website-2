@@ -84,7 +84,7 @@
         </div>
       </div>
       <table id="ordersTable">
-        <thead><tr><th>Order #</th><th>Customer</th><th>Email</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Order #</th><th>Customer</th><th>Email</th><th>Total</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -191,7 +191,14 @@
           const total = (o.subtotal || 0) + (o.tax || 0) + (o.shipping || 0);
           totalRevenue += total;
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${o.orderNumber}</td><td>${o.customer.fullName}</td><td>${o.customer.email}</td><td>$${total.toFixed(2)}</td><td>${o.date}</td><td>
+          tr.innerHTML = `<td>${o.orderNumber}</td><td>${o.customer.fullName}</td><td>${o.customer.email}</td><td>$${total.toFixed(2)}</td><td>${o.date}</td><td><span style="color: #2d5016; font-weight: bold; text-transform: uppercase;">${o.status || 'pending'}</span></td><td>
+            <select onchange="updateOrderStatus('${o.orderNumber}', this.value)" style="padding: 5px; border-radius: 3px; border: 1px solid #ddd;">
+              <option value="" disabled selected>Update Status</option>
+              <option value="pending" ${o.status === 'pending' ? 'disabled' : ''}>Pending</option>
+              <option value="processing" ${o.status === 'processing' ? 'disabled' : ''}>Processing</option>
+              <option value="shipped" ${o.status === 'shipped' ? 'disabled' : ''}>Shipped</option>
+              <option value="delivered" ${o.status === 'delivered' ? 'disabled' : ''}>Delivered</option>
+            </select>
             <button class="action-btn view" onclick="viewOrderInvoice('${JSON.stringify(o).replace(/'/g, "\\'")}')" >View Invoice</button>
           </td>`;
           tbody.appendChild(tr);
@@ -247,6 +254,26 @@
       const order = JSON.parse(orderStr);
       const invoice = new InvoiceGenerator(order);
       invoice.displayInModal();
+    }
+
+    async function updateOrderStatus(orderNumber, newStatus) {
+      if (!newStatus) return;
+      try {
+        const res = await fetch('/api/orders/' + orderNumber + '/status', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        if (res.ok) {
+          alert('Order status updated to: ' + newStatus);
+          loadOrders();
+        } else {
+          alert('Failed to update order status');
+        }
+      } catch (err) {
+        console.error('Error updating status:', err);
+        alert('Error updating order status');
+      }
     }
 
     function closeModal(modalId) {

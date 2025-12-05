@@ -140,6 +140,9 @@ app.post('/api/orders', (req, res) => {
   const order = req.body;
   order.orderNumber = 'ORD-' + Date.now();
   order.date = new Date().toISOString();
+  order.status = 'pending'; // pending → processing → shipped → delivered
+  order.trackingNumber = 'TRACK-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+  order.updatedAt = new Date().toISOString();
   // In production: persist to DB, send email, process payment verification
   console.log('Order received:', order);
   
@@ -153,6 +156,43 @@ app.post('/api/orders', (req, res) => {
   }
   
   res.status(201).json(order);
+});
+
+// Get single order by ID or order number
+app.get('/api/orders/:id', (req, res) => {
+  try {
+    const orders = readOrders();
+    const order = orders.find(o => o.orderNumber === req.params.id || o.id === req.params.id);
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not read order' });
+  }
+});
+
+// Update order status (admin only)
+app.put('/api/orders/:id/status', (req, res) => {
+  try {
+    const { status } = req.body;
+    const validStatuses = ['pending', 'processing', 'shipped', 'delivered'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+    
+    const orders = readOrders();
+    const idx = orders.findIndex(o => o.orderNumber === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: 'Order not found' });
+    
+    orders[idx].status = status;
+    orders[idx].updatedAt = new Date().toISOString();
+    if (status === 'shipped' && !orders[idx].trackingNumber) {
+      orders[idx].trackingNumber = 'TRACK-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    }
+    writeOrders(orders);
+    res.json(orders[idx]);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not update order status' });
+  }
 });
 
 // Invoices API
