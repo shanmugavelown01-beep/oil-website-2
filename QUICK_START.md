@@ -104,8 +104,8 @@ In `index.html`, find each oil card and update:
 ### Edit Contact Details
 In Contact section:
 ```html
-<p><a href="mailto:your-email@example.com">your-email@example.com</a></p>
-<p><a href="tel:+1-800-YOUR-OIL">+1-800-YOUR-OIL</a></p>
+<p><a href="mailto:shanmugavelown01@gmail.com">shanmugavelown01@gmail.com</a></p>
+<p><a href="tel:8680036354">8680036354</a></p>
 <p>Your Address Here<br>City, State ZIP</p>
 ```
 

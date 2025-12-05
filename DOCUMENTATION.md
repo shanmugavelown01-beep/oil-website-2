@@ -246,8 +246,8 @@ Edit product information in `index.html`:
 
 Update in Contact section:
 ```html
-<p><a href="mailto:your-email@domain.com">your-email@domain.com</a></p>
-<p><a href="tel:+1-XXX-XXX-XXXX">+1-XXX-XXX-XXXX</a></p>
+<p><a href="mailto:shanmugavelown01@gmail.com">shanmugavelown01@gmail.com</a></p>
+<p><a href="tel:8680036354">8680036354</a></p>
 ```
 
 ### Images
