@@ -39,6 +39,9 @@
     .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
     .stat-card h3 { color: #666; margin-bottom: 10px; }
     .stat-card .number { font-size: 2em; color: #2d5016; font-weight: bold; }
+    .bank-info { background: #f0f8f0; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #2d5016; }
+    .bank-info p { margin: 5px 0; font-size: 0.95em; }
+    .bank-info strong { color: #2d5016; }
   </style>
   <script src="invoice-generator.js"></script>
 </head>
@@ -50,6 +53,7 @@
       <button class="tab-btn active" onclick="switchTab('products')">Products</button>
       <button class="tab-btn" onclick="switchTab('orders')">Orders</button>
       <button class="tab-btn" onclick="switchTab('invoices')">Invoices & Billing</button>
+      <button class="tab-btn" onclick="switchTab('bankdetails')">Bank Details</button>
     </div>
 
     <!-- Products Tab -->
@@ -100,6 +104,26 @@
       </div>
       <table id="invoicesTable">
         <thead><tr><th>Invoice ID</th><th>Order #</th><th>Customer</th><th>Total</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Bank Details Tab -->
+    <div id="bankdetails" class="tab-content">
+      <h2>Admin Bank Details - Receiving Payments</h2>
+      <form id="bankDetailsForm">
+        <input id="bankName" placeholder="Bank Name (e.g., HDFC, ICICI)" required>
+        <input id="accountHolder" placeholder="Account Holder Name" required>
+        <input id="accountNumber" placeholder="Account Number" required>
+        <input id="ifscCode" placeholder="IFSC Code" required>
+        <input id="bankBranch" placeholder="Bank Branch" required>
+        <textarea id="bankNotes" placeholder="Additional notes (e.g., payment instructions)"></textarea>
+        <button type="submit">Save Bank Details</button>
+      </form>
+
+      <h3>Saved Bank Details</h3>
+      <table id="bankDetailsTable">
+        <thead><tr><th>Bank Name</th><th>Account Holder</th><th>Account #</th><th>IFSC Code</th><th>Branch</th><th>Actions</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -278,6 +302,91 @@
 
     function closeModal(modalId) {
       document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Bank Details Management
+    const bankAPI = '/api/bank-details';
+
+    document.getElementById('bankDetailsForm').onsubmit = async e => {
+      e.preventDefault();
+      const bankDetail = {
+        bankName: document.getElementById('bankName').value,
+        accountHolder: document.getElementById('accountHolder').value,
+        accountNumber: document.getElementById('accountNumber').value,
+        ifscCode: document.getElementById('ifscCode').value,
+        bankBranch: document.getElementById('bankBranch').value,
+        bankNotes: document.getElementById('bankNotes').value
+      };
+      
+      try {
+        const res = await fetch(bankAPI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bankDetail)
+        });
+        if (res.ok) {
+          alert('Bank details saved successfully!');
+          e.target.reset();
+          loadBankDetails();
+        } else {
+          alert('Failed to save bank details');
+        }
+      } catch (err) {
+        console.error('Error saving bank details:', err);
+        alert('Error saving bank details');
+      }
+    };
+
+    async function loadBankDetails() {
+      try {
+        const res = await fetch(bankAPI);
+        const bankDetails = await res.json();
+        const tbody = document.querySelector('#bankDetailsTable tbody');
+        tbody.innerHTML = '';
+        
+        bankDetails.forEach(bd => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${bd.bankName}</td><td>${bd.accountHolder}</td><td>${bd.accountNumber}</td><td>${bd.ifscCode}</td><td>${bd.bankBranch}</td><td>
+            <button class="action-btn view" onclick="viewBankDetail('${JSON.stringify(bd).replace(/'/g, "\\'")}')">View</button>
+            <button class="action-btn del" onclick="deleteBankDetail('${bd.id || bd.accountNumber}')">Delete</button>
+          </td>`;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Error loading bank details:', err);
+      }
+    }
+
+    function viewBankDetail(bdStr) {
+      const bd = JSON.parse(bdStr);
+      let content = `
+        <div class="bank-info">
+          <p><strong>Bank Name:</strong> ${bd.bankName}</p>
+          <p><strong>Account Holder:</strong> ${bd.accountHolder}</p>
+          <p><strong>Account Number:</strong> ${bd.accountNumber}</p>
+          <p><strong>IFSC Code:</strong> ${bd.ifscCode}</p>
+          <p><strong>Branch:</strong> ${bd.bankBranch}</p>
+          ${bd.bankNotes ? `<p><strong>Notes:</strong> ${bd.bankNotes}</p>` : ''}
+        </div>
+      `;
+      document.getElementById('invoiceContent').innerHTML = content;
+      document.getElementById('invoiceModal').classList.add('active');
+    }
+
+    async function deleteBankDetail(id) {
+      if (!confirm('Delete this bank detail?')) return;
+      try {
+        const res = await fetch(bankAPI + '/' + id, { method: 'DELETE' });
+        if (res.ok) {
+          alert('Bank detail deleted');
+          loadBankDetails();
+        } else {
+          alert('Failed to delete bank detail');
+        }
+      } catch (err) {
+        console.error('Error deleting bank detail:', err);
+        alert('Error deleting bank detail');
+      }
     }
 
     // Init
