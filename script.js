@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeShoppingCart();
     initializeCheckout();
     initializeTrackingIcon();
+    initializeOrderHistoryIcon();
     loadCartFromStorage();
 });
 
@@ -812,3 +813,26 @@ function initializeTrackingIcon() {
 }
 
 console.log('Levi Oils Website - All systems initialized! 🌿');
+
+// Order history icon handler
+function initializeOrderHistoryIcon() {
+    const historyIcon = document.getElementById('historyIcon');
+    if (!historyIcon) return;
+    historyIcon.addEventListener('click', () => {
+        // If we have a recent order saved, pass it through query to help the user
+        const lastOrder = localStorage.getItem('lastOrder');
+        if (lastOrder) {
+            try {
+                const order = JSON.parse(lastOrder);
+                if (order && order.customer && order.customer.email) {
+                    window.location.href = '/order-history.html?email=' + encodeURIComponent(order.customer.email);
+                    return;
+                }
+            } catch(e) {
+                // fallback
+            }
+        }
+        // Otherwise, go to order history page without prefilled email
+        window.location.href = '/order-history.html';
+    });
+}

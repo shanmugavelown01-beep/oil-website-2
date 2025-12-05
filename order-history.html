@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Order History - Levi Oils</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; background: #f6f6f6; color: #333; }
+    .container { max-width: 960px; margin: 30px auto; padding: 20px; }
+    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .header h1 { color:#2d5016; }
+    .search { background:white; padding:15px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .search input { width:70%; padding:10px; border:1px solid #ddd; border-radius:4px; }
+    .search button { padding:10px 14px; margin-left:10px; background:#2d5016; color:white; border:none; border-radius:4px; cursor:pointer; }
+    .empty { background:#fff3f0; padding:12px; border-left:4px solid #ffb4a2; border-radius:6px; }
+    .orders { margin-top:20px; }
+    .order-card { background:white; padding:14px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.04); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
+    .order-left { max-width:70%; }
+    .order-meta { color:#666; font-size:0.9em; margin-top:6px; }
+    .order-actions button { padding:8px 10px; margin-left:8px; border-radius:6px; border:none; cursor:pointer; }
+    .btn-track { background:#4a7c2c; color:white; }
+    .btn-invoice { background:#2d5016; color:white; }
+    .status-badge { padding:6px 10px; border-radius:14px; color:white; font-weight:bold; text-transform:uppercase; font-size:0.75em; }
+    .status-pending { background:#ff9800; }
+    .status-processing { background:#2196f3; }
+    .status-shipped { background:#4a7c2c; }
+    .status-delivered { background:#777; }
+    @media (max-width:600px){ .search input{width:100%; margin-bottom:8px;} .search button{margin-left:0;} .order-card{flex-direction:column; align-items:flex-start;} .order-actions{margin-top:8px;} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Order History</h1>
+      <a href="/" style="color:#2d5016; text-decoration:none;">← Continue Shopping</a>
+    </div>
+
+    <div class="search">
+      <form id="historyForm" onsubmit="fetchHistory(event)">
+        <input id="emailInput" type="email" placeholder="Enter your email to find orders (or leave blank to show recent)" />
+        <button type="submit">Find Orders</button>
+      </form>
+    </div>
+
+    <div id="results" class="orders"></div>
+  </div>
+
+  <script src="invoice-generator.js"></script>
+  <script>
+    async function fetchHistory(e){
+      if(e) e.preventDefault();
+      const results = document.getElementById('results');
+      results.innerHTML = '<p style="color:#666;">Loading orders…</p>';
+      const email = document.getElementById('emailInput').value.trim().toLowerCase();
+
+      try{
+        const res = await fetch('/api/orders');
+        if(!res.ok) throw new Error('Cannot load orders');
+        const orders = await res.json();
+        let filtered = orders;
+        if(email){
+          filtered = orders.filter(o => (o.customer && o.customer.email && o.customer.email.toLowerCase() === email));
+        } else {
+          // If no email, attempt to show last 10 orders
+          filtered = orders.slice().sort((a,b)=> new Date(b.date) - new Date(a.date)).slice(0,10);
+        }
+
+        if(!filtered || filtered.length === 0){
+          results.innerHTML = '<div class="empty">No orders found for that email.</div>';
+          return;
+        }
+
+        results.innerHTML = '';
+        filtered.forEach(o => {
+          const total = ((o.subtotal||0) + (o.tax||0) + (o.shipping||0)).toFixed(2);
+          const div = document.createElement('div');
+          div.className = 'order-card';
+          const statusClass = 'status-' + (o.status||'pending');
+          div.innerHTML = `
+            <div class="order-left">
+              <div><strong>Order #${o.orderNumber}</strong> &nbsp; <span class="status-badge ${statusClass}">${o.status||'pending'}</span></div>
+              <div class="order-meta">${o.date} • ${o.customer?.fullName || 'Guest'} • ${o.customer?.email || ''}</div>
+              <div class="order-meta">Items: ${o.items ? o.items.length : 0} • Total: $${total}</div>
+            </div>
+            <div class="order-actions">
+              <button class="btn-track" onclick="window.location='/order-tracking.html?order=${encodeURIComponent(o.orderNumber)}'">Track</button>
+              <button class="btn-invoice" onclick='viewInvoice(${JSON.stringify(o).replace(/'/g, "\\'")})'>Invoice</button>
+            </div>
+          `;
+          results.appendChild(div);
+        });
+
+      }catch(err){
+        console.error(err);
+        results.innerHTML = '<div class="empty">Error loading orders. Please try again later.</div>';
+      }
+    }
+
+    function viewInvoice(order){
+      try{
+        const invoice = new InvoiceGenerator(order);
+        invoice.displayInModal();
+      }catch(e){
+        alert('Invoice unavailable');
+      }
+    }
+
+    // Auto-populate email if passed in query
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const email = params.get('email');
+      if(email){ document.getElementById('emailInput').value = decodeURIComponent(email); fetchHistory(); }
+      else if(localStorage.getItem('lastOrder')){
+        try{
+          const o = JSON.parse(localStorage.getItem('lastOrder'));
+          if(o && o.customer && o.customer.email){ document.getElementById('emailInput').value = o.customer.email; fetchHistory(); }
+        }catch(e){}
+      }
+    })();
+  </script>
+</body>
+</html>
