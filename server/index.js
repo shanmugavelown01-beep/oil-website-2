@@ -135,6 +135,63 @@ app.post('/api/create-paypal-order', async (req, res) => {
   res.status(501).json({ error: 'PayPal endpoint not implemented in this demo. See README for integration steps.' });
 });
 
+app.post('/api/create-upi-order', (req, res) => {
+  // UPI Payment Handler
+  // In production: integrate with UPI payment gateway (NPCI, PhonePe, Google Pay, etc.)
+  try {
+    const { upiId, amount, orderId } = req.body;
+    if (!upiId || !amount || !orderId) {
+      return res.status(400).json({ error: 'Missing required fields: upiId, amount, orderId' });
+    }
+    
+    // Simulate UPI payment initiation
+    // In production, this would call the actual UPI gateway API
+    const transactionRef = 'UPI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    
+    res.json({
+      success: true,
+      message: 'UPI payment initiated',
+      transactionRef: transactionRef,
+      upiId: upiId,
+      amount: amount,
+      orderId: orderId,
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'UPI payment creation failed' });
+  }
+});
+
+app.post('/api/create-gpay-order', (req, res) => {
+  // Google Pay Payment Handler
+  // In production: integrate with Google Pay API (Web Payments API)
+  try {
+    const { phoneNumber, amount, orderId } = req.body;
+    if (!phoneNumber || !amount || !orderId) {
+      return res.status(400).json({ error: 'Missing required fields: phoneNumber, amount, orderId' });
+    }
+    
+    // Simulate Google Pay payment initiation
+    // In production, this would return a payment token or redirect URL
+    const transactionRef = 'GPAY-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    
+    res.json({
+      success: true,
+      message: 'Google Pay payment initiated',
+      transactionRef: transactionRef,
+      phoneNumber: phoneNumber,
+      amount: amount,
+      orderId: orderId,
+      redirectUrl: '/payment-gateway?transactionRef=' + transactionRef,
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Google Pay payment creation failed' });
+  }
+});
+
 // Simple orders endpoint (store minimal info) - this demo just echoes order and doesn't persist
 app.post('/api/orders', (req, res) => {
   const order = req.body;

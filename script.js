@@ -256,16 +256,24 @@ function closeCheckout() {
 function updatePaymentDisplay(method) {
     const cardPayment = document.getElementById('cardPayment');
     const paypalPayment = document.getElementById('paypalPayment');
+    const upiPayment = document.getElementById('upiPayment');
+    const gpayPayment = document.getElementById('gpayPayment');
     const bankPayment = document.getElementById('bankPayment');
 
     cardPayment.style.display = 'none';
     paypalPayment.style.display = 'none';
+    upiPayment.style.display = 'none';
+    gpayPayment.style.display = 'none';
     bankPayment.style.display = 'none';
 
     if (method === 'card') {
         cardPayment.style.display = 'block';
     } else if (method === 'paypal') {
         paypalPayment.style.display = 'block';
+    } else if (method === 'upi') {
+        upiPayment.style.display = 'block';
+    } else if (method === 'gpay') {
+        gpayPayment.style.display = 'block';
     } else if (method === 'bank') {
         bankPayment.style.display = 'block';
     }
@@ -334,6 +342,80 @@ function processOrder() {
         paymentMethod: paymentMethod
     };
 
+    const totalAmount = order.subtotal + order.tax + order.shipping;
+
+    // Handle payment method-specific processing
+    if (paymentMethod === 'upi') {
+        const upiId = document.getElementById('upiId').value;
+        if (!upiId) {
+            showNotification('Please enter your UPI ID', 'error');
+            return;
+        }
+
+        // Send UPI payment request to backend
+        fetch('/api/create-upi-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                upiId: upiId,
+                amount: totalAmount,
+                orderId: order.orderNumber
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                order.transactionRef = data.transactionRef;
+                completeOrderProcessing(order);
+            } else {
+                showNotification('UPI payment failed: ' + (data.error || 'Unknown error'), 'error');
+            }
+        })
+        .catch(err => {
+            console.error('UPI payment error:', err);
+            showNotification('UPI payment error. Please try again.', 'error');
+        });
+        return;
+    }
+
+    if (paymentMethod === 'gpay') {
+        const gpayPhone = document.getElementById('gpayPhone').value;
+        if (!gpayPhone) {
+            showNotification('Please enter your phone number linked to Google Pay', 'error');
+            return;
+        }
+
+        // Send Google Pay payment request to backend
+        fetch('/api/create-gpay-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                phoneNumber: gpayPhone,
+                amount: totalAmount,
+                orderId: order.orderNumber
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                order.transactionRef = data.transactionRef;
+                completeOrderProcessing(order);
+            } else {
+                showNotification('Google Pay payment failed: ' + (data.error || 'Unknown error'), 'error');
+            }
+        })
+        .catch(err => {
+            console.error('Google Pay payment error:', err);
+            showNotification('Google Pay payment error. Please try again.', 'error');
+        });
+        return;
+    }
+
+    // For other payment methods (card, paypal, bank), complete order processing directly
+    completeOrderProcessing(order);
+}
+
+function completeOrderProcessing(order) {
     // Save order for order-success page and invoice generation
     localStorage.setItem('lastOrder', JSON.stringify(order));
 

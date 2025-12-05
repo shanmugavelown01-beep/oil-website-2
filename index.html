@@ -406,6 +406,14 @@
                                 <span>PayPal</span>
                             </label>
                             <label class="payment-option">
+                                <input type="radio" name="payment" value="upi">
+                                <span>UPI</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="gpay">
+                                <span>Google Pay</span>
+                            </label>
+                            <label class="payment-option">
                                 <input type="radio" name="payment" value="bank">
                                 <span>Bank Transfer</span>
                             </label>
@@ -434,6 +442,22 @@
 
                         <div id="paypalPayment" class="payment-details" style="display:none;">
                             <p>You will be redirected to PayPal to complete your payment securely.</p>
+                        </div>
+
+                        <div id="upiPayment" class="payment-details" style="display:none;">
+                            <div class="form-group">
+                                <label>UPI ID</label>
+                                <input type="text" id="upiId" placeholder="yourname@upi" required>
+                            </div>
+                            <p class="payment-note">You will receive a payment request on your UPI app.</p>
+                        </div>
+
+                        <div id="gpayPayment" class="payment-details" style="display:none;">
+                            <div class="form-group">
+                                <label>Phone Number (linked to Google Pay)</label>
+                                <input type="tel" id="gpayPhone" placeholder="+91 XXXXX XXXXX" required>
+                            </div>
+                            <p class="payment-note">You will be redirected to complete payment securely with Google Pay.</p>
                         </div>
 
                         <div id="bankPayment" class="payment-details" style="display:none;">
