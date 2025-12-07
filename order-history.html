@@ -165,16 +165,16 @@
           }catch(e){
             console.error('Error parsing last order from storage:', e);
             // Show default message
-            document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;'><p>Enter your email address above to find your orders.</p></div>';
+            document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;"><p>Enter your email address above to find your orders.</p></div>';
           }
         } else {
           // No auto-load - show empty message with instructions
           console.log('No email param or lastOrder - showing default message');
-          document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;'><p>Enter your email address above to find your orders.</p></div>';
+          document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;"><p>Enter your email address above to find your orders.</p></div>';
         }
       } catch(err) {
         console.error('Error in page initialization:', err);
-        document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;'><p>Enter your email address above to find your orders.</p></div>';
+        document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;"><p>Enter your email address above to find your orders.</p></div>';
       }
     });
   </script>
