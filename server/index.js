@@ -12,10 +12,12 @@ app.use(bodyParser.json());
 const PRODUCTS_FILE = path.join(__dirname, 'products.json');
 const INVOICES_FILE = path.join(__dirname, 'invoices.json');
 const ORDERS_FILE = path.join(__dirname, 'orders.json');
+const BANK_DETAILS_FILE = path.join(__dirname, 'bank-details.json');
 
-// Ensure invoice and orders files exist
+// Ensure invoice, orders, and bank details files exist
 if (!fs.existsSync(INVOICES_FILE)) fs.writeFileSync(INVOICES_FILE, JSON.stringify([]));
 if (!fs.existsSync(ORDERS_FILE)) fs.writeFileSync(ORDERS_FILE, JSON.stringify([]));
+if (!fs.existsSync(BANK_DETAILS_FILE)) fs.writeFileSync(BANK_DETAILS_FILE, JSON.stringify([]));
 
 function readProducts() {
   const raw = fs.readFileSync(PRODUCTS_FILE, 'utf8');
@@ -42,6 +44,15 @@ function readOrders() {
 
 function writeOrders(list) {
   fs.writeFileSync(ORDERS_FILE, JSON.stringify(list, null, 2));
+}
+
+function readBankDetails() {
+  const raw = fs.readFileSync(BANK_DETAILS_FILE, 'utf8');
+  return JSON.parse(raw);
+}
+
+function writeBankDetails(list) {
+  fs.writeFileSync(BANK_DETAILS_FILE, JSON.stringify(list, null, 2));
 }
 
 // Serve frontend static files from project root
@@ -130,24 +141,16 @@ app.post('/api/create-checkout-session', async (req, res) => {
 });
 
 app.post('/api/create-paypal-order', async (req, res) => {
-  // Placeholder: implement PayPal server-side order creation using REST SDK
-  // Return approval URL to redirect the user to PayPal for approval.
   res.status(501).json({ error: 'PayPal endpoint not implemented in this demo. See README for integration steps.' });
 });
 
 app.post('/api/create-upi-order', (req, res) => {
-  // UPI Payment Handler
-  // In production: integrate with UPI payment gateway (NPCI, PhonePe, Google Pay, etc.)
   try {
     const { upiId, amount, orderId } = req.body;
     if (!upiId || !amount || !orderId) {
       return res.status(400).json({ error: 'Missing required fields: upiId, amount, orderId' });
     }
-    
-    // Simulate UPI payment initiation
-    // In production, this would call the actual UPI gateway API
     const transactionRef = 'UPI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-    
     res.json({
       success: true,
       message: 'UPI payment initiated',
@@ -164,18 +167,12 @@ app.post('/api/create-upi-order', (req, res) => {
 });
 
 app.post('/api/create-gpay-order', (req, res) => {
-  // Google Pay Payment Handler
-  // In production: integrate with Google Pay API (Web Payments API)
   try {
     const { phoneNumber, amount, orderId } = req.body;
     if (!phoneNumber || !amount || !orderId) {
       return res.status(400).json({ error: 'Missing required fields: phoneNumber, amount, orderId' });
     }
-    
-    // Simulate Google Pay payment initiation
-    // In production, this would return a payment token or redirect URL
     const transactionRef = 'GPAY-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-    
     res.json({
       success: true,
       message: 'Google Pay payment initiated',
@@ -192,18 +189,14 @@ app.post('/api/create-gpay-order', (req, res) => {
   }
 });
 
-// Simple orders endpoint (store minimal info) - this demo just echoes order and doesn't persist
 app.post('/api/orders', (req, res) => {
   const order = req.body;
   order.orderNumber = 'ORD-' + Date.now();
   order.date = new Date().toISOString();
-  order.status = 'pending'; // pending → processing → shipped → delivered
+  order.status = 'pending';
   order.trackingNumber = 'TRACK-' + Math.random().toString(36).substr(2, 9).toUpperCase();
   order.updatedAt = new Date().toISOString();
-  // In production: persist to DB, send email, process payment verification
   console.log('Order received:', order);
-  
-  // Store order
   try {
     const orders = readOrders();
     orders.push(order);
@@ -211,11 +204,9 @@ app.post('/api/orders', (req, res) => {
   } catch (err) {
     console.warn('Could not persist order:', err);
   }
-  
   res.status(201).json(order);
 });
 
-// Get single order by ID or order number
 app.get('/api/orders/:id', (req, res) => {
   try {
     const orders = readOrders();
@@ -227,7 +218,6 @@ app.get('/api/orders/:id', (req, res) => {
   }
 });
 
-// Update order status (admin only)
 app.put('/api/orders/:id/status', (req, res) => {
   try {
     const { status } = req.body;
@@ -235,11 +225,9 @@ app.put('/api/orders/:id/status', (req, res) => {
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
-    
     const orders = readOrders();
     const idx = orders.findIndex(o => o.orderNumber === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Order not found' });
-    
     orders[idx].status = status;
     orders[idx].updatedAt = new Date().toISOString();
     if (status === 'shipped' && !orders[idx].trackingNumber) {
@@ -252,7 +240,6 @@ app.put('/api/orders/:id/status', (req, res) => {
   }
 });
 
-// Invoices API
 app.post('/api/invoices', (req, res) => {
   try {
     const invoice = req.body;
@@ -293,6 +280,44 @@ app.get('/api/orders', (req, res) => {
     res.json(orders);
   } catch (err) {
     res.status(500).json({ error: 'Could not read orders' });
+  }
+});
+
+// Bank Details API - Admin manages receiving bank accounts
+app.get('/api/bank-details', (req, res) => {
+  try {
+    const bankDetails = readBankDetails();
+    res.json(bankDetails);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not read bank details' });
+  }
+});
+
+app.post('/api/bank-details', (req, res) => {
+  try {
+    const bankDetails = readBankDetails();
+    const newDetail = {
+      id: 'BD-' + Date.now(),
+      ...req.body,
+      createdAt: new Date().toISOString()
+    };
+    bankDetails.push(newDetail);
+    writeBankDetails(bankDetails);
+    res.status(201).json(newDetail);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Could not save bank details' });
+  }
+});
+
+app.delete('/api/bank-details/:id', (req, res) => {
+  try {
+    let bankDetails = readBankDetails();
+    bankDetails = bankDetails.filter(bd => bd.id !== req.params.id && bd.accountNumber !== req.params.id);
+    writeBankDetails(bankDetails);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Could not delete bank details' });
   }
 });
 
