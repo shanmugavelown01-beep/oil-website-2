@@ -55,15 +55,29 @@
       const email = document.getElementById('emailInput').value.trim().toLowerCase();
 
       try{
-        const res = await fetch('/api/orders');
+        console.log('Fetching orders from /api/orders...');
+        const res = await fetch('/api/orders', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        console.log('Fetch response status:', res.status);
+        
         if(!res.ok) {
-          console.error('API error:', res.status, res.statusText);
-          throw new Error(`Server returned ${res.status}`);
+          console.error('API error - Status:', res.status, 'Text:', res.statusText);
+          const errorText = await res.text().catch(() => 'Unknown error');
+          console.error('Response body:', errorText);
+          throw new Error(`Server error ${res.status}: ${res.statusText}`);
         }
+        
         const orders = await res.json();
+        console.log('Orders received:', orders.length, 'orders');
+        
         if(!Array.isArray(orders)) {
-          console.error('Invalid response format:', orders);
-          throw new Error('Invalid response format');
+          console.error('Invalid response format - not an array:', orders);
+          throw new Error('Server returned invalid data format');
         }
         let filtered = orders;
         if(email){
@@ -99,8 +113,16 @@
         });
 
       }catch(err){
-        console.error('Error fetching orders:', err);
-        results.innerHTML = '<div class="empty"><strong>Error loading orders.</strong> Please try again later.<br><br><small style="color:#666;">If the problem persists, try entering your email address above and clicking "Find Orders".</small></div>';
+        console.error('Fetch error:', err.message, err);
+        results.innerHTML = `<div class="empty">
+          <strong>Error loading orders.</strong>
+          <br><br>
+          <small style="color:#666;">
+            ${err.message || 'Unknown error occurred'}<br>
+            Please try again later.<br><br>
+            If the problem persists, try entering your email address above and clicking "Find Orders".
+          </small>
+        </div>`;
       }
     }
 
@@ -114,29 +136,45 @@
     }
 
     // Auto-populate email if passed in query
-    (function(){
+    document.addEventListener('DOMContentLoaded', function(){
       const params = new URLSearchParams(location.search);
       const email = params.get('email');
-      if(email){ 
-        document.getElementById('emailInput').value = decodeURIComponent(email); 
-        setTimeout(() => fetchHistory(), 100);
+      
+      // Ensure results div exists
+      if (!document.getElementById('results')) {
+        console.error('Results div not found');
+        return;
       }
-      else if(localStorage.getItem('lastOrder')){
-        try{
-          const o = JSON.parse(localStorage.getItem('lastOrder'));
-          if(o && o.customer && o.customer.email){ 
-            document.getElementById('emailInput').value = o.customer.email; 
-            setTimeout(() => fetchHistory(), 100);
-          }
-        }catch(e){
-          console.error('Error parsing last order from storage:', e);
-          // Silently fail and let user manually enter email
+      
+      try {
+        if(email){ 
+          console.log('Email from query:', email);
+          document.getElementById('emailInput').value = decodeURIComponent(email); 
+          setTimeout(() => fetchHistory(), 200);
         }
-      } else {
-        // No auto-load - show empty message with instructions
+        else if(localStorage.getItem('lastOrder')){
+          try{
+            const o = JSON.parse(localStorage.getItem('lastOrder'));
+            if(o && o.customer && o.customer.email){ 
+              console.log('Email from lastOrder:', o.customer.email);
+              document.getElementById('emailInput').value = o.customer.email; 
+              setTimeout(() => fetchHistory(), 200);
+            }
+          }catch(e){
+            console.error('Error parsing last order from storage:', e);
+            // Show default message
+            document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;"><p>Enter your email address above to find your orders.</p></div>';
+          }
+        } else {
+          // No auto-load - show empty message with instructions
+          console.log('No email param or lastOrder - showing default message');
+          document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;"><p>Enter your email address above to find your orders.</p></div>';
+        }
+      } catch(err) {
+        console.error('Error in page initialization:', err);
         document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;"><p>Enter your email address above to find your orders.</p></div>';
       }
-    })();
+    });
   </script>
 </body>
 </html>
