@@ -92,6 +92,21 @@
 
     async function searchOrder(e) {
       e.preventDefault();
+      
+      // Check if backend is configured
+      if (!CONFIG.apiUrl) {
+        document.getElementById('content').innerHTML = `
+          <div class="error">
+            ⚠️ Backend Not Configured<br><br>
+            <small>
+              To track orders, deploy your backend to Railway.app and update config.js.<br>
+              For testing, open <a href="http://localhost/order-tracking.html" style="color:white;">http://localhost/order-tracking.html</a> instead.
+            </small>
+          </div>
+        `;
+        return;
+      }
+      
       const orderNum = document.getElementById('orderNumber').value.trim();
       const content = document.getElementById('content');
       
