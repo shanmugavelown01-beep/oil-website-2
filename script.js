@@ -217,6 +217,9 @@ function initializeCheckout() {
         });
     }
 
+    // Initialize payment display based on the currently selected option
+    const initialPayment = document.querySelector('input[name="payment"]:checked');
+    if (initialPayment) updatePaymentDisplay(initialPayment.value);
     // Format card input
     const cardNumber = document.getElementById('cardNumber');
     if (cardNumber) {
@@ -261,6 +264,13 @@ function updatePaymentDisplay(method) {
     const bankPayment = document.getElementById('bankPayment');
     const codPayment = document.getElementById('codPayment');
 
+    // Payment input elements - we'll enable/disable and set required appropriately
+    const cardNumberInput = document.getElementById('cardNumber');
+    const cardExpiryInput = document.getElementById('cardExpiry');
+    const cardCVVInput = document.getElementById('cardCVV');
+    const upiIdInput = document.getElementById('upiId');
+    const gpayPhoneInput = document.getElementById('gpayPhone');
+
     cardPayment.style.display = 'none';
     paypalPayment.style.display = 'none';
     upiPayment.style.display = 'none';
@@ -268,21 +278,36 @@ function updatePaymentDisplay(method) {
     bankPayment.style.display = 'none';
     codPayment.style.display = 'none';
 
+    // Disable all specific payment inputs by default (so hidden required fields don't block validation)
+    [cardNumberInput, cardExpiryInput, cardCVVInput, upiIdInput, gpayPhoneInput].forEach(el => {
+        if (el) {
+            el.required = false;
+            el.disabled = true;
+        }
+    });
+
     if (method === 'card') {
         cardPayment.style.display = 'block';
+        if (cardNumberInput) { cardNumberInput.disabled = false; cardNumberInput.required = true; }
+        if (cardExpiryInput) { cardExpiryInput.disabled = false; cardExpiryInput.required = true; }
+        if (cardCVVInput) { cardCVVInput.disabled = false; cardCVVInput.required = true; }
     } else if (method === 'paypal') {
         paypalPayment.style.display = 'block';
     } else if (method === 'upi') {
         upiPayment.style.display = 'block';
+        if (upiIdInput) { upiIdInput.disabled = false; upiIdInput.required = true; }
     } else if (method === 'gpay') {
         gpayPayment.style.display = 'block';
+        if (gpayPhoneInput) { gpayPhoneInput.disabled = false; gpayPhoneInput.required = true; }
     } else if (method === 'bank') {
         bankPayment.style.display = 'block';
     } else if (method === 'cod') {
         codPayment.style.display = 'block';
         // Update COD amount
-        const total = parseFloat(document.getElementById('orderTotal').textContent.replace('₹', ''));
-        document.getElementById('codAmount').textContent = total.toFixed(2);
+        const totalEl = document.getElementById('orderTotal');
+        const total = totalEl ? parseFloat(totalEl.textContent.replace('₹', '')) : 0;
+        const codAmountEl = document.getElementById('codAmount');
+        if (codAmountEl) codAmountEl.textContent = (!isNaN(total) ? total.toFixed(2) : '0.00');
     }
 }
 
@@ -335,7 +360,12 @@ function processOrder() {
     const state = document.getElementById('state').value;
     const zip = document.getElementById('zip').value;
     const country = document.getElementById('country').value;
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+    const selectedPayment = document.querySelector('input[name="payment"]:checked');
+    if (!selectedPayment) {
+        showNotification('Please select a payment method', 'error');
+        return;
+    }
+    const paymentMethod = selectedPayment.value;
 
     // Create order object
     const order = {
