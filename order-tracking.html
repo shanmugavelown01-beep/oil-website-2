@@ -74,6 +74,7 @@
     <div id="content"></div>
   </div>
 
+  <script src="config.js"></script>
   <script>
     const statusSteps = [
       { key: 'pending', label: 'Order Placed', desc: 'Your order has been received' },
@@ -97,7 +98,7 @@
       content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading order details...</p></div>';
       
       try {
-        const res = await fetch('/api/orders/' + orderNum);
+        const res = await fetch(CONFIG.apiUrl + '/api/orders/' + orderNum);
         if (!res.ok) {
           if (res.status === 404) {
             content.innerHTML = '<div class="error">❌ Order not found. Please check your order number and try again.</div>';
