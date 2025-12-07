@@ -322,4 +322,21 @@ app.delete('/api/bank-details/:id', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+const server = app.listen(port, 'localhost', () => {
+  console.log(`Server running on http://localhost:${port}`);
+  console.log('Routes initialized');
+});
+
+server.on('error', (err) => {
+  console.error('Server error:', err.message);
+});
+
+// Handle uncaught errors
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});

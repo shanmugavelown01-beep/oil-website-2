@@ -38,5 +38,15 @@
     "bankBranch": "Delhi",
     "bankNotes": "UPI enabled",
     "createdAt": "2025-12-07T10:29:10.690Z"
+  },
+  {
+    "id": "BD-1765106097311",
+    "bankBranch": "Bangalore",
+    "bankName": "HDFC Bank",
+    "accountHolder": "Levi Oils Pvt Ltd",
+    "accountNumber": "1234567890123456",
+    "ifscCode": "HDFC0000001",
+    "bankNotes": "Primary account for INR transfers",
+    "createdAt": "2025-12-07T11:14:57.311Z"
   }
 ]

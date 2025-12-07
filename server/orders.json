@@ -145,5 +145,139 @@
     "status": "pending",
     "trackingNumber": "TRACK-MKDWOCW09",
     "updatedAt": "2025-12-05T18:02:18.221Z"
+  },
+  {
+    "status": "shipped",
+    "tax": 149.7,
+    "paymentMethod": "card",
+    "subtotal": 1497,
+    "items": [
+      {
+        "price": 599,
+        "quantity": 1,
+        "name": "Premium Olive Oil",
+        "id": "1"
+      },
+      {
+        "price": 449,
+        "quantity": 2,
+        "name": "Sunflower Oil",
+        "id": "2"
+      }
+    ],
+    "shipping": 50,
+    "customer": {
+      "fullName": "Amit Patel",
+      "state": "Maharashtra",
+      "zip": "400001",
+      "phone": "9876543210",
+      "country": "India",
+      "city": "Mumbai",
+      "email": "amit.patel@test.com",
+      "address": "123 Park Street"
+    },
+    "paymentStatus": "completed",
+    "orderNumber": "ORD-1765106003638",
+    "date": "2025-12-07T11:13:23.638Z",
+    "trackingNumber": "TRACK-8FCZHBWG9",
+    "updatedAt": "2025-12-07T11:14:44.686Z"
+  },
+  {
+    "paymentStatus": "pending",
+    "subtotal": 599,
+    "shipping": 40,
+    "items": [
+      {
+        "price": 599,
+        "quantity": 1,
+        "name": "Premium Olive Oil",
+        "id": "1"
+      }
+    ],
+    "tax": 59.9,
+    "customer": {
+      "fullName": "Priya Singh",
+      "state": "Karnataka",
+      "zip": "560001",
+      "phone": "8765432109",
+      "country": "India",
+      "city": "Bangalore",
+      "email": "priya.singh@test.com",
+      "address": "456 Tech Park"
+    },
+    "upiId": "priya.singh@upi",
+    "status": "pending",
+    "paymentMethod": "upi",
+    "orderNumber": "ORD-1765106040513",
+    "date": "2025-12-07T11:14:00.513Z",
+    "trackingNumber": "TRACK-93UY3ORLF",
+    "updatedAt": "2025-12-07T11:14:00.513Z"
+  },
+  {
+    "phoneNumber": "7654321098",
+    "paymentStatus": "pending",
+    "subtotal": 1297,
+    "shipping": 0,
+    "items": [
+      {
+        "price": 399,
+        "quantity": 2,
+        "name": "Coconut Oil",
+        "id": "2"
+      },
+      {
+        "price": 499,
+        "quantity": 1,
+        "name": "Sesame Oil",
+        "id": "3"
+      }
+    ],
+    "tax": 129.7,
+    "customer": {
+      "fullName": "Rajesh Kumar",
+      "state": "Delhi",
+      "zip": "110001",
+      "phone": "7654321098",
+      "country": "India",
+      "city": "Delhi",
+      "email": "rajesh.kumar@test.com",
+      "address": "789 Market Street"
+    },
+    "status": "pending",
+    "paymentMethod": "googlepay",
+    "orderNumber": "ORD-1765106051971",
+    "date": "2025-12-07T11:14:11.971Z",
+    "trackingNumber": "TRACK-5EF4NULH7",
+    "updatedAt": "2025-12-07T11:14:11.971Z"
+  },
+  {
+    "status": "pending",
+    "tax": 179.7,
+    "paymentMethod": "banktransfer",
+    "subtotal": 1797,
+    "items": [
+      {
+        "price": 599,
+        "quantity": 3,
+        "name": "Premium Olive Oil",
+        "id": "1"
+      }
+    ],
+    "shipping": 50,
+    "customer": {
+      "fullName": "Neha Sharma",
+      "state": "Telangana",
+      "zip": "500001",
+      "phone": "6543210987",
+      "country": "India",
+      "city": "Hyderabad",
+      "email": "neha.sharma@test.com",
+      "address": "321 Business Park"
+    },
+    "paymentStatus": "pending",
+    "orderNumber": "ORD-1765106066867",
+    "date": "2025-12-07T11:14:26.867Z",
+    "trackingNumber": "TRACK-FWHR1Q3RV",
+    "updatedAt": "2025-12-07T11:14:26.867Z"
   }
 ]
