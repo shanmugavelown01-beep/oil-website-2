@@ -1,14 +1,4 @@
-[
-  {
-    "id": "BD-1765102080846",
-    "bankName": "HDFC Bank",
-    "accountHolder": "Levi Oils Private Ltd",
-    "accountNumber": "5041234567890123",
-    "ifscCode": "HDFC0001234",
-    "bankBranch": "Mumbai",
-    "bankNotes": "7 days settlement",
-    "createdAt": "2025-12-07T10:08:00.846Z"
-  },
+
   {
     "id": "BD-1765102080917",
     "bankName": "ICICI Bank",
@@ -18,35 +8,4 @@
     "bankBranch": "Delhi",
     "bankNotes": "UPI enabled",
     "createdAt": "2025-12-07T10:08:00.917Z"
-  },
-  {
-    "id": "BD-1765103350680",
-    "bankName": "HDFC Bank",
-    "accountHolder": "Levi Oils Private Ltd",
-    "accountNumber": "5041234567890123",
-    "ifscCode": "HDFC0001234",
-    "bankBranch": "Mumbai",
-    "bankNotes": "7 days settlement",
-    "createdAt": "2025-12-07T10:29:10.680Z"
-  },
-  {
-    "id": "BD-1765103350690",
-    "bankName": "ICICI Bank",
-    "accountHolder": "Levi Oils Private Ltd",
-    "accountNumber": "9876543210987654",
-    "ifscCode": "ICIC0000001",
-    "bankBranch": "Delhi",
-    "bankNotes": "UPI enabled",
-    "createdAt": "2025-12-07T10:29:10.690Z"
-  },
-  {
-    "id": "BD-1765106097311",
-    "bankBranch": "Bangalore",
-    "bankName": "HDFC Bank",
-    "accountHolder": "Levi Oils Pvt Ltd",
-    "accountNumber": "1234567890123456",
-    "ifscCode": "HDFC0000001",
-    "bankNotes": "Primary account for INR transfers",
-    "createdAt": "2025-12-07T11:14:57.311Z"
   }
-]

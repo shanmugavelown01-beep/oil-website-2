@@ -279,5 +279,41 @@
     "date": "2025-12-07T11:14:26.867Z",
     "trackingNumber": "TRACK-FWHR1Q3RV",
     "updatedAt": "2025-12-07T11:14:26.867Z"
+  },
+  {
+    "status": "pending",
+    "tax": 169.7,
+    "paymentMethod": "cod",
+    "subtotal": 1697,
+    "items": [
+      {
+        "price": 599,
+        "quantity": 2,
+        "name": "Premium Olive Oil",
+        "id": "1"
+      },
+      {
+        "price": 499,
+        "quantity": 1,
+        "name": "Sesame Oil",
+        "id": "3"
+      }
+    ],
+    "shipping": 50,
+    "customer": {
+      "fullName": "Suresh Verma",
+      "state": "Maharashtra",
+      "zip": "411001",
+      "phone": "9876543218",
+      "country": "India",
+      "city": "Pune",
+      "email": "suresh.verma@test.com",
+      "address": "789 Shopping Mall"
+    },
+    "paymentStatus": "pending",
+    "orderNumber": "ORD-1765106675778",
+    "date": "2025-12-07T11:24:35.778Z",
+    "trackingNumber": "TRACK-JF79TE3WV",
+    "updatedAt": "2025-12-07T11:24:35.778Z"
   }
 ]

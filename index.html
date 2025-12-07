@@ -417,6 +417,10 @@
                                 <input type="radio" name="payment" value="bank">
                                 <span>Bank Transfer</span>
                             </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="cod">
+                                <span>Cash on Delivery</span>
+                            </label>
                         </div>
 
                         <div id="cardPayment" class="payment-details">
@@ -462,6 +466,12 @@
 
                         <div id="bankPayment" class="payment-details" style="display:none;">
                             <p>Bank transfer details will be provided after order confirmation.</p>
+                        </div>
+
+                        <div id="codPayment" class="payment-details" style="display:none;">
+                            <p><strong>Cash on Delivery</strong></p>
+                            <p>Pay ₹<span id="codAmount">0.00</span> when your order is delivered to your doorstep.</p>
+                            <p class="payment-note">Our delivery partner will collect payment in cash upon delivery. Please ensure you have the exact amount ready.</p>
                         </div>
                     </form>
                 </div>

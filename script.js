@@ -259,12 +259,14 @@ function updatePaymentDisplay(method) {
     const upiPayment = document.getElementById('upiPayment');
     const gpayPayment = document.getElementById('gpayPayment');
     const bankPayment = document.getElementById('bankPayment');
+    const codPayment = document.getElementById('codPayment');
 
     cardPayment.style.display = 'none';
     paypalPayment.style.display = 'none';
     upiPayment.style.display = 'none';
     gpayPayment.style.display = 'none';
     bankPayment.style.display = 'none';
+    codPayment.style.display = 'none';
 
     if (method === 'card') {
         cardPayment.style.display = 'block';
@@ -276,6 +278,11 @@ function updatePaymentDisplay(method) {
         gpayPayment.style.display = 'block';
     } else if (method === 'bank') {
         bankPayment.style.display = 'block';
+    } else if (method === 'cod') {
+        codPayment.style.display = 'block';
+        // Update COD amount
+        const total = parseFloat(document.getElementById('orderTotal').textContent.replace('₹', ''));
+        document.getElementById('codAmount').textContent = total.toFixed(2);
     }
 }
 

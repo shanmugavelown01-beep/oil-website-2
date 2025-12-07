@@ -1497,6 +1497,15 @@ body {
         width: 100%;
     }
 
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-option {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
     .hero {
         grid-template-columns: 1fr;
         padding: 40px 1rem;
@@ -1577,6 +1586,7 @@ body {
     .modal-content {
         width: 95%;
         padding: 1rem;
+        max-height: 95vh;
     }
 
     .checkout-container {
@@ -1585,6 +1595,25 @@ body {
 
     .form-row {
         grid-template-columns: 1fr;
+    }
+
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-option {
+        padding: 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .payment-details {
+        padding: 0.8rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px;
+        padding: 10px;
     }
 
     .hero-title {
@@ -1609,5 +1638,17 @@ body {
 
     .contact-container {
         gap: 2rem;
+    }
+
+    .checkout-actions {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .btn-cancel,
+    .btn-place-order {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.9rem;
     }
 }
