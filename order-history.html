@@ -55,8 +55,9 @@
       const email = document.getElementById('emailInput').value.trim().toLowerCase();
 
       try{
-        console.log('Fetching orders from /api/orders...');
-        const res = await fetch('/api/orders', {
+        const apiUrl = window.location.origin + '/api/orders';
+        console.log('Fetching orders from:', apiUrl);
+        const res = await fetch(apiUrl, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

@@ -1,0 +1,11 @@
+{
+  "buildCommand": "cd server && npm install",
+  "outputDirectory": ".",
+  "framework": "other",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/server/index.js"
+    }
+  ]
+}

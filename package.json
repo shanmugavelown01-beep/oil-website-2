@@ -1,0 +1,11 @@
+{
+  "name": "levi-oils",
+  "version": "1.0.0",
+  "description": "Levi Oils - Premium Oil E-Commerce Website",
+  "scripts": {
+    "start": "cd server && npm start",
+    "dev": "cd server && npm start",
+    "build": "cd server && npm install"
+  },
+  "devDependencies": {}
+}
