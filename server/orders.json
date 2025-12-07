@@ -410,5 +410,55 @@
     "status": "pending",
     "trackingNumber": "TRACK-GM10ZJQNV",
     "updatedAt": "2025-12-07T12:01:22.261Z"
+  },
+  {
+    "orderNumber": "ORD-1765109035198",
+    "date": "2025-12-07T12:03:55.198Z",
+    "customer": {
+      "fullName": "D SHANMUGAVEl",
+      "email": "shanmugavelown@gmail.com",
+      "phone": "08610651192",
+      "address": "Pethana Samy Kovil",
+      "city": "Virudhunagar",
+      "state": "Tamil Nadu",
+      "zip": "626101",
+      "country": "india"
+    },
+    "items": [
+      {
+        "id": 1,
+        "name": "Levi Oils Groundnut Oil",
+        "price": 12.99,
+        "volume": "500ml",
+        "description": "Rich in antioxidants and vitamin E.",
+        "image": "",
+        "quantity": 1
+      },
+      {
+        "id": 2,
+        "name": "Levi Oils Coconut Oil",
+        "price": 14.99,
+        "volume": "500ml",
+        "description": "Organic virgin coconut oil.",
+        "image": "",
+        "quantity": 1
+      },
+      {
+        "id": 3,
+        "name": "Levi Oils Sesame Oil",
+        "price": 13.99,
+        "volume": "250ml",
+        "description": "Nutty and aromatic sesame oil.",
+        "image": "",
+        "quantity": 1
+      }
+    ],
+    "subtotal": 41.97,
+    "tax": 4.197,
+    "shipping": 5,
+    "paymentMethod": "cod",
+    "status": "pending",
+    "trackingNumber": "TRACK-D4KCQ05M6",
+    "updatedAt": "2025-12-07T12:03:55.198Z"
   }
 ]

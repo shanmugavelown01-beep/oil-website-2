@@ -210,7 +210,8 @@ app.post('/api/orders', (req, res) => {
 app.get('/api/orders/:id', (req, res) => {
   try {
     const orders = readOrders();
-    const order = orders.find(o => o.orderNumber === req.params.id || o.id === req.params.id);
+    const searchId = req.params.id.toUpperCase();
+    const order = orders.find(o => (o.orderNumber && o.orderNumber.toUpperCase() === searchId) || o.id === req.params.id);
     if (!order) return res.status(404).json({ error: 'Order not found' });
     res.json(order);
   } catch (err) {

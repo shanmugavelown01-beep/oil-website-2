@@ -56,8 +56,15 @@
 
       try{
         const res = await fetch('/api/orders');
-        if(!res.ok) throw new Error('Cannot load orders');
+        if(!res.ok) {
+          console.error('API error:', res.status, res.statusText);
+          throw new Error(`Server returned ${res.status}`);
+        }
         const orders = await res.json();
+        if(!Array.isArray(orders)) {
+          console.error('Invalid response format:', orders);
+          throw new Error('Invalid response format');
+        }
         let filtered = orders;
         if(email){
           filtered = orders.filter(o => (o.customer && o.customer.email && o.customer.email.toLowerCase() === email));
