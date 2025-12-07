@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Debug Test</title>
+  <style>
+    body { font-family: monospace; background: #f0f0f0; padding: 20px; }
+    .box { background: white; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #2d5016; }
+    .error { border-left-color: #ff0000; color: #ff0000; }
+    .success { border-left-color: #00aa00; color: #00aa00; }
+    .info { border-left-color: #0066cc; color: #0066cc; }
+    pre { background: #f9f9f9; padding: 10px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>API Debug Test</h1>
+  
+  <div class="box info">
+    <strong>Current Environment:</strong><br>
+    Hostname: <span id="hostname">-</span><br>
+    Origin: <span id="origin">-</span><br>
+    Protocol: <span id="protocol">-</span>
+  </div>
+
+  <div class="box info">
+    <strong>Testing API Endpoints:</strong><br>
+    <button onclick="testLocalhost()">Test localhost:3000</button>
+    <button onclick="testVercel()">Test Vercel /api/orders</button>
+  </div>
+
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('hostname').textContent = window.location.hostname;
+    document.getElementById('origin').textContent = window.location.origin;
+    document.getElementById('protocol').textContent = window.location.protocol;
+
+    function log(title, message, isError = false) {
+      const results = document.getElementById('results');
+      const div = document.createElement('div');
+      div.className = 'box ' + (isError ? 'error' : 'success');
+      div.innerHTML = `<strong>${title}</strong><pre>${message}</pre>`;
+      results.appendChild(div);
+    }
+
+    async function testLocalhost() {
+      try {
+        const res = await fetch('http://localhost:3000/api/orders');
+        const data = await res.json();
+        log('✓ localhost:3000', `Status: ${res.status}\nOrders found: ${data.length}`, false);
+      } catch (err) {
+        log('✗ localhost:3000', err.message, true);
+      }
+    }
+
+    async function testVercel() {
+      try {
+        const url = window.location.origin + '/api/orders';
+        console.log('Testing:', url);
+        const res = await fetch(url);
+        const data = await res.json();
+        log('✓ Vercel /api/orders', `Status: ${res.status}\nOrders found: ${data.length}`, false);
+      } catch (err) {
+        log('✗ Vercel /api/orders', err.message, true);
+      }
+    }
+
+    // Auto-test
+    window.addEventListener('load', () => {
+      if (window.location.hostname === 'localhost') {
+        testLocalhost();
+      } else {
+        testVercel();
+      }
+    });
+  </script>
+</body>
+</html>
