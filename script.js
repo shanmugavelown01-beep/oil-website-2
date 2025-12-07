@@ -146,8 +146,8 @@ function updateCartDisplay() {
             <div class="cart-item-info">
                 <div class="cart-item-name">${item.name}</div>
                 <div class="cart-item-details">
-                    <span>$${item.price.toFixed(2)} × ${item.quantity}</span>
-                    <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                    <span>₹${item.price.toFixed(2)} × ${item.quantity}</span>
+                    <span>₹${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
             </div>
             <div class="cart-item-actions">
@@ -164,9 +164,9 @@ function updateCartDisplay() {
     const taxAmount = subtotalAmount * 0.1;
     const totalAmount = subtotalAmount + taxAmount;
 
-    subtotal.textContent = '$' + subtotalAmount.toFixed(2);
-    tax.textContent = '$' + taxAmount.toFixed(2);
-    cartTotal.textContent = '$' + totalAmount.toFixed(2);
+    subtotal.textContent = '₹' + subtotalAmount.toFixed(2);
+    tax.textContent = '₹' + taxAmount.toFixed(2);
+    cartTotal.textContent = '₹' + totalAmount.toFixed(2);
 }
 
 function saveCartToStorage() {
@@ -292,7 +292,7 @@ function updateCheckoutSummary() {
                 <div class="summary-item-name">${item.name}</div>
                 <div style="font-size: 0.8rem; color: #666;">Qty: ${item.quantity}</div>
             </div>
-            <span class="summary-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+            <span class="summary-item-price">₹${(item.price * item.quantity).toFixed(2)}</span>
         </div>
     `).join('');
 
@@ -301,10 +301,10 @@ function updateCheckoutSummary() {
     const shippingAmount = 5.00;
     const totalAmount = subtotalAmount + taxAmount + shippingAmount;
 
-    orderSubtotal.textContent = '$' + subtotalAmount.toFixed(2);
-    orderTax.textContent = '$' + taxAmount.toFixed(2);
-    shipping.textContent = '$' + shippingAmount.toFixed(2);
-    orderTotal.textContent = '$' + totalAmount.toFixed(2);
+    orderSubtotal.textContent = '₹' + subtotalAmount.toFixed(2);
+    orderTax.textContent = '₹' + taxAmount.toFixed(2);
+    shipping.textContent = '₹' + shippingAmount.toFixed(2);
+    orderTotal.textContent = '₹' + totalAmount.toFixed(2);
 }
 
 function processOrder() {
@@ -458,7 +458,7 @@ function showOrderConfirmation(order) {
     const total = order.subtotal + order.tax + order.shipping;
 
     orderNumber.textContent = order.orderNumber;
-    confirmationTotal.textContent = '$' + total.toFixed(2);
+    confirmationTotal.textContent = '₹' + total.toFixed(2);
 
     checkoutModal.classList.remove('active');
     confirmationModal.classList.add('active');

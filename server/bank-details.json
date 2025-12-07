@@ -18,5 +18,25 @@
     "bankBranch": "Delhi",
     "bankNotes": "UPI enabled",
     "createdAt": "2025-12-07T10:08:00.917Z"
+  },
+  {
+    "id": "BD-1765103350680",
+    "bankName": "HDFC Bank",
+    "accountHolder": "Levi Oils Private Ltd",
+    "accountNumber": "5041234567890123",
+    "ifscCode": "HDFC0001234",
+    "bankBranch": "Mumbai",
+    "bankNotes": "7 days settlement",
+    "createdAt": "2025-12-07T10:29:10.680Z"
+  },
+  {
+    "id": "BD-1765103350690",
+    "bankName": "ICICI Bank",
+    "accountHolder": "Levi Oils Private Ltd",
+    "accountNumber": "9876543210987654",
+    "ifscCode": "ICIC0000001",
+    "bankBranch": "Delhi",
+    "bankNotes": "UPI enabled",
+    "createdAt": "2025-12-07T10:29:10.690Z"
   }
 ]

@@ -80,7 +80,7 @@
         const stored = localStorage.getItem('lastOrder');
         if (stored) {
           currentOrder = JSON.parse(stored);
-          el.innerHTML = `<p><strong>Order:</strong> ${currentOrder.orderNumber}</p><p><strong>Total:</strong> $${(currentOrder.subtotal + currentOrder.tax + currentOrder.shipping).toFixed(2)}</p>`;
+          el.innerHTML = `<p><strong>Order:</strong> ${currentOrder.orderNumber}</p><p><strong>Total:</strong> ₹${(currentOrder.subtotal + currentOrder.tax + currentOrder.shipping).toFixed(2)}</p>`;
         } else {
           el.innerHTML = '<p>No order details available.</p>';
         }

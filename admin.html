@@ -84,7 +84,7 @@
         </div>
         <div class="stat-card">
           <h3>Total Revenue</h3>
-          <div class="number" id="totalRevenue">$0</div>
+          <div class="number" id="totalRevenue">₹0</div>
         </div>
       </div>
       <table id="ordersTable">
@@ -159,7 +159,7 @@
       tbody.innerHTML = '';
       products.forEach(p => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>$${p.price.toFixed(2)}</td><td>${p.volume||''}</td><td>
+        tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>₹${p.price.toFixed(2)}</td><td>${p.volume||''}</td><td>
           <button class="action-btn edit" data-id="${p.id}" onclick="editProduct(${p.id})">Edit</button>
           <button class="action-btn del" data-id="${p.id}" onclick="deleteProduct(${p.id})">Delete</button>
         </td>`;
@@ -215,7 +215,7 @@
           const total = (o.subtotal || 0) + (o.tax || 0) + (o.shipping || 0);
           totalRevenue += total;
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${o.orderNumber}</td><td>${o.customer.fullName}</td><td>${o.customer.email}</td><td>$${total.toFixed(2)}</td><td>${o.date}</td><td><span style="color: #2d5016; font-weight: bold; text-transform: uppercase;">${o.status || 'pending'}</span></td><td>
+          tr.innerHTML = `<td>${o.orderNumber}</td><td>${o.customer.fullName}</td><td>${o.customer.email}</td><td>₹${total.toFixed(2)}</td><td>${o.date}</td><td><span style="color: #2d5016; font-weight: bold; text-transform: uppercase;">${o.status || 'pending'}</span></td><td>
             <select onchange="updateOrderStatus('${o.orderNumber}', this.value)" style="padding: 5px; border-radius: 3px; border: 1px solid #ddd;">
               <option value="" disabled selected>Update Status</option>
               <option value="pending" ${o.status === 'pending' ? 'disabled' : ''}>Pending</option>
@@ -228,7 +228,7 @@
           tbody.appendChild(tr);
         });
         document.getElementById('totalOrders').textContent = orders.length;
-        document.getElementById('totalRevenue').textContent = '$' + totalRevenue.toFixed(2);
+        document.getElementById('totalRevenue').textContent = '₹' + totalRevenue.toFixed(2);
       } catch (err) {
         console.error('Error loading orders:', err);
       }

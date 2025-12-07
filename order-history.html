@@ -81,7 +81,7 @@
             <div class="order-left">
               <div><strong>Order #${o.orderNumber}</strong> &nbsp; <span class="status-badge ${statusClass}">${o.status||'pending'}</span></div>
               <div class="order-meta">${o.date} • ${o.customer?.fullName || 'Guest'} • ${o.customer?.email || ''}</div>
-              <div class="order-meta">Items: ${o.items ? o.items.length : 0} • Total: $${total}</div>
+              <div class="order-meta">Items: ${o.items ? o.items.length : 0} • Total: ₹${total}</div>
             </div>
             <div class="order-actions">
               <button class="btn-track" onclick="window.location='/order-tracking.html?order=${encodeURIComponent(o.orderNumber)}'">Track</button>

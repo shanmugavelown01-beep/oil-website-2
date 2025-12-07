@@ -145,7 +145,7 @@
           items += `
             <div class="item">
               <span class="item-name">${item.name} × ${item.quantity}</span>
-              <span class="item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+              <span class="item-price">₹${(item.price * item.quantity).toFixed(2)}</span>
             </div>
           `;
         });
@@ -179,19 +179,19 @@
           <div class="totals">
             <div class="total-row">
               <span>Subtotal:</span>
-              <span>$${(order.subtotal || 0).toFixed(2)}</span>
+              <span>₹${(order.subtotal || 0).toFixed(2)}</span>
             </div>
             <div class="total-row">
               <span>Tax (10%):</span>
-              <span>$${(order.tax || 0).toFixed(2)}</span>
+              <span>₹${(order.tax || 0).toFixed(2)}</span>
             </div>
             <div class="total-row">
               <span>Shipping:</span>
-              <span>$${(order.shipping || 0).toFixed(2)}</span>
+              <span>₹${(order.shipping || 0).toFixed(2)}</span>
             </div>
             <div class="total-row grand">
               <span>Total Amount:</span>
-              <span>$${total.toFixed(2)}</span>
+              <span>₹${total.toFixed(2)}</span>
             </div>
           </div>
 

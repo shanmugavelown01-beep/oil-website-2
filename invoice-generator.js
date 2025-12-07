@@ -26,8 +26,8 @@ class InvoiceGenerator {
         <td>${i + 1}</td>
         <td>${item.name}</td>
         <td>${item.quantity}</td>
-        <td>$${item.price.toFixed(2)}</td>
-        <td>$${(item.quantity * item.price).toFixed(2)}</td>
+        <td>₹${item.price.toFixed(2)}</td>
+        <td>₹${(item.quantity * item.price).toFixed(2)}</td>
       </tr>
     `).join('');
 
@@ -111,19 +111,19 @@ class InvoiceGenerator {
         <div class="totals">
           <div class="totals-row">
             <span>Subtotal:</span>
-            <span>$${subtotal.toFixed(2)}</span>
+            <span>₹${subtotal.toFixed(2)}</span>
           </div>
           <div class="totals-row">
             <span>Tax (10%):</span>
-            <span>$${tax.toFixed(2)}</span>
+            <span>₹${tax.toFixed(2)}</span>
           </div>
           <div class="totals-row">
             <span>Shipping:</span>
-            <span>$${shipping.toFixed(2)}</span>
+            <span>₹${shipping.toFixed(2)}</span>
           </div>
           <div class="totals-row total">
             <span>Total Amount:</span>
-            <span>$${total.toFixed(2)}</span>
+            <span>₹${total.toFixed(2)}</span>
           </div>
         </div>
 
