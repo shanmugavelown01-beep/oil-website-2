@@ -340,32 +340,81 @@ function updateCheckoutSummary() {
 }
 
 function processOrder() {
-    const billingForm = document.getElementById('billingForm');
-    const paymentForm = document.getElementById('paymentForm');
+    // Get form data
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const state = document.getElementById('state').value.trim();
+    const zip = document.getElementById('zip').value.trim();
+    const country = document.getElementById('country').value.trim();
 
-    // Validate forms
-    if (!billingForm.checkValidity() || !paymentForm.checkValidity()) {
-        showNotification('Please fill in all required fields', 'error');
-        billingForm.reportValidity();
-        paymentForm.reportValidity();
+    // Validate billing fields manually (avoid form.checkValidity which fails on hidden required inputs)
+    if (!fullName || !email || !phone || !address || !city || !state || !zip || !country) {
+        showNotification('Please fill in all billing fields', 'error');
         return;
     }
 
-    // Get form data
-    const fullName = document.getElementById('fullName').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
-    const address = document.getElementById('address').value;
-    const city = document.getElementById('city').value;
-    const state = document.getElementById('state').value;
-    const zip = document.getElementById('zip').value;
-    const country = document.getElementById('country').value;
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showNotification('Please enter a valid email address', 'error');
+        return;
+    }
+
+    // Get selected payment method
     const selectedPayment = document.querySelector('input[name="payment"]:checked');
     if (!selectedPayment) {
         showNotification('Please select a payment method', 'error');
         return;
     }
     const paymentMethod = selectedPayment.value;
+
+    // Validate payment-method-specific fields
+    if (paymentMethod === 'card') {
+        const cardName = document.getElementById('cardName').value.trim();
+        const cardNumber = document.getElementById('cardNumber').value.trim();
+        const cardExpiry = document.getElementById('cardExpiry').value.trim();
+        const cardCVV = document.getElementById('cardCVV').value.trim();
+
+        if (!cardName || !cardNumber || !cardExpiry || !cardCVV) {
+            showNotification('Please fill in all card details', 'error');
+            return;
+        }
+        if (cardNumber.replace(/\s/g, '').length < 13) {
+            showNotification('Please enter a valid card number', 'error');
+            return;
+        }
+        if (cardExpiry.length !== 5 || !cardExpiry.includes('/')) {
+            showNotification('Please enter expiry date in MM/YY format', 'error');
+            return;
+        }
+        if (cardCVV.length !== 3) {
+            showNotification('Please enter a valid CVV (3 digits)', 'error');
+            return;
+        }
+    } else if (paymentMethod === 'upi') {
+        const upiId = document.getElementById('upiId').value.trim();
+        if (!upiId) {
+            showNotification('Please enter your UPI ID', 'error');
+            return;
+        }
+        if (!upiId.includes('@')) {
+            showNotification('Please enter a valid UPI ID (format: username@bank)', 'error');
+            return;
+        }
+    } else if (paymentMethod === 'gpay') {
+        const gpayPhone = document.getElementById('gpayPhone').value.trim();
+        if (!gpayPhone) {
+            showNotification('Please enter your phone number', 'error');
+            return;
+        }
+        if (gpayPhone.replace(/\D/g, '').length < 10) {
+            showNotification('Please enter a valid phone number', 'error');
+            return;
+        }
+    }
 
     // Create order object
     const order = {
@@ -381,74 +430,7 @@ function processOrder() {
 
     const totalAmount = order.subtotal + order.tax + order.shipping;
 
-    // Handle payment method-specific processing
-    if (paymentMethod === 'upi') {
-        const upiId = document.getElementById('upiId').value;
-        if (!upiId) {
-            showNotification('Please enter your UPI ID', 'error');
-            return;
-        }
-
-        // Send UPI payment request to backend
-        fetch('/api/create-upi-order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                upiId: upiId,
-                amount: totalAmount,
-                orderId: order.orderNumber
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                order.transactionRef = data.transactionRef;
-                completeOrderProcessing(order);
-            } else {
-                showNotification('UPI payment failed: ' + (data.error || 'Unknown error'), 'error');
-            }
-        })
-        .catch(err => {
-            console.error('UPI payment error:', err);
-            showNotification('UPI payment error. Please try again.', 'error');
-        });
-        return;
-    }
-
-    if (paymentMethod === 'gpay') {
-        const gpayPhone = document.getElementById('gpayPhone').value;
-        if (!gpayPhone) {
-            showNotification('Please enter your phone number linked to Google Pay', 'error');
-            return;
-        }
-
-        // Send Google Pay payment request to backend
-        fetch('/api/create-gpay-order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                phoneNumber: gpayPhone,
-                amount: totalAmount,
-                orderId: order.orderNumber
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                order.transactionRef = data.transactionRef;
-                completeOrderProcessing(order);
-            } else {
-                showNotification('Google Pay payment failed: ' + (data.error || 'Unknown error'), 'error');
-            }
-        })
-        .catch(err => {
-            console.error('Google Pay payment error:', err);
-            showNotification('Google Pay payment error. Please try again.', 'error');
-        });
-        return;
-    }
-
-    // For other payment methods (card, paypal, bank), complete order processing directly
+    // For all payment methods, complete order processing directly (no separate payment endpoints)
     completeOrderProcessing(order);
 }
 

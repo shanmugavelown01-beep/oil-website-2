@@ -373,5 +373,42 @@
     "status": "pending",
     "trackingNumber": "TRACK-WK62RBIFD",
     "updatedAt": "2025-12-07T11:43:23.199Z"
+  },
+  {
+    "subtotal": 39.97,
+    "shipping": 5,
+    "paymentMethod": "card",
+    "customer": {
+      "fullName": "John Doe",
+      "state": "Maharashtra",
+      "zip": "400001",
+      "phone": "+91 98765 43210",
+      "country": "India",
+      "city": "Mumbai",
+      "email": "john@example.com",
+      "address": "123 Main Street"
+    },
+    "tax": 3.997,
+    "items": [
+      {
+        "price": 12.99,
+        "quantity": 2,
+        "name": "Levi Oils Groundnut Oil",
+        "id": 1,
+        "volume": "500ml"
+      },
+      {
+        "price": 13.99,
+        "quantity": 1,
+        "name": "Levi Oils Sesame Oil",
+        "id": 3,
+        "volume": "250ml"
+      }
+    ],
+    "orderNumber": "ORD-1765108882261",
+    "date": "2025-12-07T12:01:22.261Z",
+    "status": "pending",
+    "trackingNumber": "TRACK-GM10ZJQNV",
+    "updatedAt": "2025-12-07T12:01:22.261Z"
   }
 ]
