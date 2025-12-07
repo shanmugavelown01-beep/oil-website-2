@@ -99,8 +99,8 @@
         });
 
       }catch(err){
-        console.error(err);
-        results.innerHTML = '<div class="empty">Error loading orders. Please try again later.</div>';
+        console.error('Error fetching orders:', err);
+        results.innerHTML = '<div class="empty"><strong>Error loading orders.</strong> Please try again later.<br><br><small style="color:#666;">If the problem persists, try entering your email address above and clicking "Find Orders".</small></div>';
       }
     }
 
@@ -117,12 +117,24 @@
     (function(){
       const params = new URLSearchParams(location.search);
       const email = params.get('email');
-      if(email){ document.getElementById('emailInput').value = decodeURIComponent(email); fetchHistory(); }
+      if(email){ 
+        document.getElementById('emailInput').value = decodeURIComponent(email); 
+        setTimeout(() => fetchHistory(), 100);
+      }
       else if(localStorage.getItem('lastOrder')){
         try{
           const o = JSON.parse(localStorage.getItem('lastOrder'));
-          if(o && o.customer && o.customer.email){ document.getElementById('emailInput').value = o.customer.email; fetchHistory(); }
-        }catch(e){}
+          if(o && o.customer && o.customer.email){ 
+            document.getElementById('emailInput').value = o.customer.email; 
+            setTimeout(() => fetchHistory(), 100);
+          }
+        }catch(e){
+          console.error('Error parsing last order from storage:', e);
+          // Silently fail and let user manually enter email
+        }
+      } else {
+        // No auto-load - show empty message with instructions
+        document.getElementById('results').innerHTML = '<div style="text-align:center; color:#666; padding:20px;"><p>Enter your email address above to find your orders.</p></div>';
       }
     })();
   </script>
